@@ -62,7 +62,7 @@ ROOT_URLCONF = 'config.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR / 'templates'],  # Directorio de plantillas
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -106,6 +106,8 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+LOGIN_REDIRECT_URL = 'dashboard'  # Redirigir a la página de inicio
+LOGOUT_REDIRECT_URL = 'login'  # Redirigir a la página de login
 
 # Internationalization
 # https://docs.djangoproject.com/en/5.2/topics/i18n/
