@@ -3,6 +3,8 @@ from django.contrib.auth import login
 from .forms import RegistroVoluntarioForm, RegistroOrganizacionForm
 from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
+from apps.proyectos.models import Proyecto
+from apps.organizaciones.models import Organizacion
 
 # Create your views here.
 def registrar_voluntario(request):
@@ -38,10 +40,13 @@ def dashboard(request):
     # Aquí puedes personalizar la lógica para mostrar diferentes dashboards
 
     if user.role == 'voluntario':
-        return render(request, 'core/dashboard_voluntario.html', {'user': user})
+        proyectos = Proyecto.objects.all()
+        return render(request, 'core/dashboard_voluntario.html', {'user': user, 'proyectos': proyectos})
         # return HttpResponse("Bienvenido al Dashboard del Voluntario")
     elif user.role == 'organizacion':
-        return render(request, 'core/dashboard_organizacion.html', {'user': user})
+        organizacion = Organizacion.objects.get(usuario=user)
+        proyectos = Proyecto.objects.filter(organizacion=organizacion)
+        return render(request, 'core/dashboard_organizacion.html', {'user': user, 'proyectos': proyectos})
         # return HttpResponse("Bienvenido al Dashboard de la Organización")
     else:
         return HttpResponse("Bienvenido al Dashboard General")

@@ -11,5 +11,9 @@
         {% csrf_token %}
         <button type="submit">Cerrar sesión</button>
     </form>
+
+    {% include 'proyectos/listar_proyectos.html' %}
+    
+    <a href="{% url 'crear_proyecto' %}">Crear Nuevo Proyecto</a>
 </body>
 </html>

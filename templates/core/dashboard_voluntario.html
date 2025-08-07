@@ -7,6 +7,7 @@
 </head>
 <body>
     <h1>Bienvenido al Dashboard del Voluntario</h1>
+    {% include 'proyectos/listar_proyectos.html' %}
     <form action="{% url 'logout' %}" method="post">
         {% csrf_token %}
         <button type="submit">Cerrar sesión</button>

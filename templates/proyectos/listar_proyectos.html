@@ -1,0 +1,15 @@
+<h2>Proyectos Disponibles</h2>
+<ul>
+    {% for proyecto in proyectos %}
+    <li>
+        <strong>{{ proyecto.title }}</strong> - {{ proyecto.location }}<br>
+        <p>{{ proyecto.description }}</p>
+        Estado: {{ proyecto.status }}<br>
+        Fecha de Inicio: {{ proyecto.start_date }}<br>
+        Fecha de Fin: {{ proyecto.end_date }}<br>
+    </li>
+    <hr>
+    {% empty %}
+        <li>No hay proyectos disponibles.</li>
+    {% endfor %}
+</ul>

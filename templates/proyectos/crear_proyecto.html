@@ -1,0 +1,31 @@
+<h2>Crear Proyecto</h2>
+<form action="{% url 'crear_proyecto' %}" method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Crear Proyecto</button>
+</form>
+
+
+
+<!-- Este codigo de abajo fue agregado por copilot en el IDE si da error borrarlo -->
+{% if form.errors %}
+    <div class="error">
+        <p>Por favor corrige los errores a continuación:</p>
+        <ul>
+            {% for field in form %}
+                {% for error in field.errors %}
+                    <li>{{ error }}</li>
+                {% endfor %}
+            {% endfor %}
+            {% for error in form.non_field_errors %}
+                <li>{{ error }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+{% endif %}
+{% if success %}
+    <p>Proyecto creado exitosamente.</p>
+{% endif %}
+{% if not success %}
+    <p>Por favor completa el formulario para crear un nuevo proyecto.</p>
+{% endif %}

@@ -22,4 +22,8 @@ urlpatterns = [
     
     # Include the core app URLs
     path('', include('apps.core.urls')),
+
+    # Include the proyectos app URLs
+    path('proyectos/', include('apps.proyectos.urls')),
+    
 ]
