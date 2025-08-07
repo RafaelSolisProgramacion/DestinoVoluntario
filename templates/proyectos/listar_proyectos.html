@@ -7,6 +7,19 @@
         Estado: {{ proyecto.status }}<br>
         Fecha de Inicio: {{ proyecto.start_date }}<br>
         Fecha de Fin: {{ proyecto.end_date }}<br>
+
+        {% if user.is_authenticated %}
+            {% if user.role == 'organizacion' %}
+                <a href="{% url 'editar_proyecto' proyecto.id %}">Editar</a>
+                <a href="{ url 'ver_inscripciones' proyecto.id %}">Ver Inscripciones</a>
+                <a href="{ url 'cancelar_proyecto' proyecto.id %}">Cancelar</a>
+            {% endif %}
+            {% if user.role == 'voluntario' %}
+                <a href="{ url 'inscribirse_proyecto' proyecto.id %}">Inscribirse</a>
+
+            {% endif %}
+        {% endif %}
+        <a href="{ url 'detalles_proyecto' proyecto.id %}">Ver Detalles</a>
     </li>
     <hr>
     {% empty %}

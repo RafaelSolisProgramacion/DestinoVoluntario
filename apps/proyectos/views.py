@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from .forms import ProyectoForm
 from .models import Proyecto
@@ -23,7 +23,25 @@ def crear_proyecto(request):
             proyecto = form.save(commit=False)
             proyecto.organizacion = user.organizacion
             proyecto.save()
-            return redirect('listar_proyectos')
+            return redirect('dashboard')  # Redirigir al dashboard de la organización
     else:
         form = ProyectoForm()
     return render(request, 'proyectos/crear_proyecto.html', {'form': form})
+
+@login_required
+def editar_proyecto(request, proyecto_id):
+    user = request.user
+    proyecto = get_object_or_404(Proyecto, id=proyecto_id)
+
+    # Verificamos que el usuario sea la organizacion dueña del proyecto
+    if user.role != 'organizacion' or proyecto.organizacion != user.organizacion:
+        return redirect('dashboard')
+
+    if request.method == 'POST':
+        form = ProyectoForm(request.POST, instance=proyecto)
+        if form.is_valid():
+            form.save()
+            return redirect('dashboard')  # Redirigir al dashboard de la organización
+    else:
+        form = ProyectoForm(instance=proyecto)
+    return render(request, 'proyectos/editar_proyecto.html', {'form': form})
