@@ -48,3 +48,33 @@ def editar_proyecto(request, proyecto_id):
     else:
         form = ProyectoForm(instance=proyecto)
     return render(request, 'proyectos/editar_proyecto.html', {'form': form})
+
+@login_required
+def cerrar_proyecto(request, proyecto_id):
+    user = request.user
+    proyecto = get_object_or_404(Proyecto, id=proyecto_id)
+
+    # Verificamos que el usuario sea la organizacion dueña del proyecto
+    if user.role != 'organizacion' or proyecto.organizacion != user.organizacion:
+        return redirect('dashboard')
+
+    if request.method == 'POST':
+        proyecto.status = 'cerrado'
+        proyecto.save()
+        return redirect('dashboard')  # Redirigir al dashboard de la organización
+    return render(request, 'proyectos/editar_proyecto.html', {'proyecto': proyecto})
+
+@login_required
+def reactivar_proyecto(request, proyecto_id):
+    user = request.user
+    proyecto = get_object_or_404(Proyecto, id=proyecto_id)
+
+    # Verificamos que el usuario sea la organizacion dueña del proyecto
+    if user.role != 'organizacion' or proyecto.organizacion != user.organizacion:
+        return redirect('dashboard')
+
+    if request.method == 'POST':
+        proyecto.status = 'activo'
+        proyecto.save()
+        return redirect('dashboard')  # Redirigir al dashboard de la organización
+    return render(request, 'proyectos/editar_proyecto.html', {'proyecto': proyecto})

@@ -1,9 +1,9 @@
-<h2>Postulaciones para {{ proyecto.title }}</h2>
+<h2>Postulaciones para {{ user.username }}</h2>
 
 <table>
     <thead>
         <tr>
-            <th>Usuario</th>
+            <th>Proyecto</th>
             <th>Estado</th>
             <th>Fecha de Postulación</th>
             <th>Motivación</th>
@@ -13,7 +13,7 @@
     <tbody>
         {% for postulacion in postulaciones %}
         <tr>
-            <td>{{ postulacion.voluntario.username }}</td>
+            <td>{{ postulacion.proyecto.title }}</td>
             <td>{{ postulacion.status }}</td>
             <td>{{ postulacion.applied_at }}</td>
             <td>{{ postulacion.motivation|default:"Sin mensaje" }}</td>
@@ -25,21 +25,10 @@
                         <a href="{% url 'editar_postulacion' postulacion.id %}">Editar Postulación</a>
                     {% elif postulacion.status == 'aceptada' %}
                         <span>Tu postulación ha sido aceptada.</span>
+                        <a href="{% url 'cancelar_postulacion' postulacion.id %}">Cancelar Postulación</a>
                     {% elif postulacion.status == 'rechazada' %}
                         <span>Tu postulación ha sido rechazada.</span>
-                    {% endif %}
-                {% endif %}
-                {% if user.is_authenticated and user.role == 'organizacion' %}
-                    {% if postulacion.status == 'pendiente' %}
-                        <a href="{% url 'aprobar_postulacion' postulacion.id %}">Aprobar</a>
-                        <a href="{% url 'rechazar_postulacion' postulacion.id %}">Rechazar</a>
-                    {% endif %}
-                    {% if postulacion.status == 'aceptada' %}
-                        <span>Postulación Aceptada</span>
-                        <a href="{% url 'rechazar_postulacion' postulacion.id %}">Rechazar</a>
-                    {% elif postulacion.status == 'rechazada' %}
-                        <span>Postulación Rechazada</span>
-                        <a href="{% url 'aprobar_postulacion' postulacion.id %}">Aprobar</a>
+                        <a href="{% url 'crear_postulacion' proyecto.id %}">Re-Inscribirse</a>
                     {% endif %}
                 {% endif %}
             </td>

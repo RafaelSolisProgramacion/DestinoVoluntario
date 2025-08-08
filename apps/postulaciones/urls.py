@@ -8,6 +8,7 @@ urlpatterns = [
     path('rechazar/<int:postulacion_id>/', views.rechazar_postulacion, name='rechazar_postulacion'),
     path('cancelar/<int:postulacion_id>/', views.cancelar_postulacion, name='cancelar_postulacion'),
     path('editar/<int:postulacion_id>/', views.editar_postulacion, name='editar_postulacion'),
+    path('listar_voluntario/', views.listar_postulaciones_voluntario, name='listar_postulaciones_voluntario'),
     #path('detalle/<int:postulacion_id>/', views.detalle_postulacion, name='detalle_postulacion'),
     #path('mis_postulaciones/', views.mis_postulaciones, name='mis_postulaciones'),
     #path('mis_postulaciones/<int:proyecto_id>/', views.mis_postulaciones_proyecto, name='mis_postulaciones_proyecto'),

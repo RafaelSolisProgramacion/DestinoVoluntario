@@ -7,10 +7,16 @@
 </head>
 <body>
     <h1>Bienvenido al Dashboard del Voluntario: {{ user.username }}</h1>
-    {% include 'proyectos/listar_proyectos.html' %}
     <form action="{% url 'logout' %}" method="post">
         {% csrf_token %}
         <button type="submit">Cerrar sesión</button>
     </form>
+    <h2>Mis Postulaciones</h2>
+    
+    {% if user.is_authenticated and user.role == 'voluntario' %}
+        <a href="{% url 'listar_postulaciones_voluntario' %}">Ver Mis Postulaciones</a>
+    {% endif %}
+    {% include 'proyectos/listar_proyectos.html' %}
+    
 </body>
 </html>

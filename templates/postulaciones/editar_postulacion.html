@@ -1,4 +1,4 @@
-<h2>Editar Postulación para {{ postulacion.proyecto.title }}</h2>
+<h2>Editar Postulación para {{ proyecto.title }}</h2>
 
 <form method="post">
     {% csrf_token %}
@@ -6,9 +6,8 @@
     <button type="submit">Guardar Cambios</button>
 </form>
 
-<a href="{% url 'listar_postulaciones' proyecto.id %}">Volver a la lista de postulaciones</a>
 {% if user.is_authenticated and user.role == 'voluntario' %}
-    <a href="{ url 'cancelar_postulacion' postulacion.id %}">Cancelar Postulación</a>
+    <a href="{% url 'listar_postulaciones_voluntario' %}">Volver a mi lista de postulaciones</a>
 {% endif %}
 
 {% if user.is_authenticated and user.role == 'organizacion' %}

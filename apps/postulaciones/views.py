@@ -49,6 +49,16 @@ def listar_postulaciones(request, proyecto_id):
     
     return render(request, 'postulaciones/listar_postulaciones.html', {'postulaciones': postulaciones, 'proyecto': proyecto})
 
+# Mostrar postulaciones de un voluntario
+@login_required
+def listar_postulaciones_voluntario(request):
+    user = request.user
+    if user.role != 'voluntario':
+        return redirect('dashboard')
+
+    postulaciones = Postulacion.objects.filter(voluntario=user)
+    return render(request, 'postulaciones/listar_postulaciones_voluntario.html', {'postulaciones': postulaciones})
+
 # Aprobar o rechazar una postulación (opcional)
 @login_required
 def aprobar_postulacion(request, postulacion_id):
@@ -96,7 +106,8 @@ def cancelar_postulacion(request, postulacion_id):
         return redirect('dashboard')
     
     postulacion.delete()
-    return redirect('listar_postulaciones', proyecto_id=proyecto.id)
+    # Redirige a la lista de postulaciones del voluntario
+    return redirect('listar_postulaciones_voluntario')
 
 # Editar una postulación (opcional)
 @login_required
@@ -115,7 +126,8 @@ def editar_postulacion(request, postulacion_id):
         form = PostulacionForm(request.POST, instance=postulacion)
         if form.is_valid():
             form.save()
-            return redirect('listar_postulaciones', proyecto_id=proyecto.id)
+            # Redirige a la lista de postulaciones del voluntario
+            return redirect('listar_postulaciones_voluntario')
     else:
         form = PostulacionForm(instance=postulacion)
     

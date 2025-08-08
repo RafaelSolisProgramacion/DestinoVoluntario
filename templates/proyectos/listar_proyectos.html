@@ -15,6 +15,11 @@
             {% if user.role == 'organizacion' %}
                 <a href="{% url 'editar_proyecto' proyecto.id %}">Editar</a>
                 <a href="{% url 'listar_postulaciones' proyecto.id %}">Ver Inscripciones</a>
+                {% if proyecto.status == 'activo' %}
+                    <a href="{% url 'cerrar_proyecto' proyecto.id %}">Cerrar Proyecto</a>
+                {% elif proyecto.status == 'cerrado' %}
+                    <a href="{% url 'reactivar_proyecto' proyecto.id %}">Reactivar Proyecto</a>
+                {% endif %}
                 <a href="{ url 'cancelar_proyecto' proyecto.id %}">Cancelar</a>
             {% endif %}
             {% if user.role == 'voluntario' %}
