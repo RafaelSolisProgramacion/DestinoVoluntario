@@ -25,5 +25,8 @@ urlpatterns = [
 
     # Include the proyectos app URLs
     path('proyectos/', include('apps.proyectos.urls')),
+
+    # Include the postulaciones app URLs
+    path('postulaciones/', include('apps.postulaciones.urls')),
     
 ]

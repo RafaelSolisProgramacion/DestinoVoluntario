@@ -1,0 +1,7 @@
+<h2>Postularse al proyecto: {{ proyecto.title }}</h2>
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Confirmar Postulación</button>
+    <a href="{ url 'proyecto_detalle' proyecto.id %}">Cancelar</a>
+</form>

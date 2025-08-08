@@ -3,11 +3,14 @@ from django.contrib.auth.decorators import login_required
 from .forms import ProyectoForm
 from .models import Proyecto
 from apps.organizaciones.models import Organizacion
+from apps.postulaciones.models import Postulacion
 
 # Create your views here.
 def listar_proyectos(request):
     proyectos = Proyecto.objects.all()
-    return render(request, 'proyectos/listar_proyectos.html', {'proyectos': proyectos})
+    user = request.user
+    postulaciones = Postulacion.objects.all()
+    return render(request, 'proyectos/listar_proyectos.html', {'proyectos': proyectos, 'user': user, 'postulaciones': postulaciones})
 
 @login_required
 def crear_proyecto(request):

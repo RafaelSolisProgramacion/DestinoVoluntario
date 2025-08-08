@@ -1,0 +1,33 @@
+<h2>Postulaciones para {{ proyecto.title }}</h2>
+
+<table>
+    <thead>
+        <tr>
+            <th>Usuario</th>
+            <th>Estado</th>
+            <th>Fecha de Postulación</th>
+            <th>Motivación</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for postulacion in postulaciones %}
+        <tr>
+            <td>{{ postulacion.voluntario.username }}</td>
+            <td>{{ postulacion.status }}</td>
+            <td>{{ postulacion.applied_at }}</td>
+            <td>{{ postulacion.motivation|default:"Sin mensaje" }}</td>
+            <td>
+                <a href="{ url 'editar_postulacion' postulacion.id %}">Aceptar</a>
+                <a href="{ url 'eliminar_postulacion' postulacion.id %}">Rechazar</a>
+            </td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="5">No hay postulaciones para este proyecto.</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<a href="{% url 'dashboard' %}">Volver a Proyectos</a>

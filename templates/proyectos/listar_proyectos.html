@@ -11,12 +11,17 @@
         {% if user.is_authenticated %}
             {% if user.role == 'organizacion' %}
                 <a href="{% url 'editar_proyecto' proyecto.id %}">Editar</a>
-                <a href="{ url 'ver_inscripciones' proyecto.id %}">Ver Inscripciones</a>
+                <a href="{% url 'listar_postulaciones' proyecto.id %}">Ver Inscripciones</a>
                 <a href="{ url 'cancelar_proyecto' proyecto.id %}">Cancelar</a>
             {% endif %}
             {% if user.role == 'voluntario' %}
-                <a href="{ url 'inscribirse_proyecto' proyecto.id %}">Inscribirse</a>
 
+            <!-- Verificar si el voluntario ya se ha inscrito en el proyecto -->
+                {% if proyecto.id in postulados %}
+                    <span>Ya te has postulado a este proyecto.</span>
+                {% else %}
+                <a href="{% url 'crear_postulacion' proyecto.id %}">Inscribirse</a>
+                {% endif %}
             {% endif %}
         {% endif %}
         <a href="{ url 'detalles_proyecto' proyecto.id %}">Ver Detalles</a>

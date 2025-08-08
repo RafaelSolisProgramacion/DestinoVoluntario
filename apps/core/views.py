@@ -5,6 +5,7 @@ from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
 from apps.proyectos.models import Proyecto
 from apps.organizaciones.models import Organizacion
+from apps.postulaciones.models import Postulacion
 
 # Create your views here.
 def registrar_voluntario(request):
@@ -41,7 +42,9 @@ def dashboard(request):
 
     if user.role == 'voluntario':
         proyectos = Proyecto.objects.all()
-        return render(request, 'core/dashboard_voluntario.html', {'user': user, 'proyectos': proyectos})
+        postulaciones = Postulacion.objects.filter(voluntario=user)
+        proyectos_postulados = set(postulaciones.values_list('proyecto_id', flat=True))
+        return render(request, 'core/dashboard_voluntario.html', {'user': user, 'proyectos': proyectos, 'postulados': proyectos_postulados})
         # return HttpResponse("Bienvenido al Dashboard del Voluntario")
     elif user.role == 'organizacion':
         organizacion = Organizacion.objects.get(usuario=user)
