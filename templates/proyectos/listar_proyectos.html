@@ -1,4 +1,7 @@
+{% load dict_filters %}
 <h2>Proyectos Disponibles</h2>
+
+{% if proyectos %}
 <ul>
     {% for proyecto in proyectos %}
     <li>
@@ -16,9 +19,25 @@
             {% endif %}
             {% if user.role == 'voluntario' %}
 
+            <!-- Verificar si el proyecto esta activo -->
+             
             <!-- Verificar si el voluntario ya se ha inscrito en el proyecto -->
                 {% if proyecto.id in postulados %}
-                    <span>Ya te has postulado a este proyecto.</span>
+                    <span>Ya te has postulado a este proyecto:</span>
+
+                    <!-- Mostrar opciones de edición o cancelación si la postulación está pendiente -->
+                    {% with postulacion=postulaciones_por_proyecto|dict_get:proyecto.id %}
+                    {% if postulacion.status == 'pendiente' %}
+                        <a href="{% url 'editar_postulacion' postulacion.id %}">Editar Postulación</a>
+                        <a href="{% url 'cancelar_postulacion' postulacion.id %}">Cancelar Postulación</a>
+                    {% elif postulacion.status == 'aceptada' %}
+                        <span>APROBADA.</span>
+                    {% elif postulacion.status == 'rechazada' %}
+                        <span>RECHAZADA.</span>
+                    {% endif %}
+                    {% endwith %}
+
+        
                 {% else %}
                 <a href="{% url 'crear_postulacion' proyecto.id %}">Inscribirse</a>
                 {% endif %}
@@ -27,7 +46,8 @@
         <a href="{ url 'detalles_proyecto' proyecto.id %}">Ver Detalles</a>
     </li>
     <hr>
-    {% empty %}
-        <li>No hay proyectos disponibles.</li>
     {% endfor %}
 </ul>
+{% else %}
+<p>No hay proyectos disponibles.</p>
+{% endif %}

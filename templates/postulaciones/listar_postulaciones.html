@@ -18,8 +18,32 @@
             <td>{{ postulacion.applied_at }}</td>
             <td>{{ postulacion.motivation|default:"Sin mensaje" }}</td>
             <td>
-                <a href="{ url 'editar_postulacion' postulacion.id %}">Aceptar</a>
-                <a href="{ url 'eliminar_postulacion' postulacion.id %}">Rechazar</a>
+                {% if user.is_authenticated and user.role == 'voluntario' %}
+                    {% if postulacion.status == 'pendiente' %}
+                        <span>Tu postulación está pendiente.</span>
+                    {% elif postulacion.status == 'aprobada' %}
+                        <span>Tu postulación ha sido aprobada.</span>
+                    {% elif postulacion.status == 'rechazada' %}
+                        <span>Tu postulación ha sido rechazada.</span>
+                    {% endif %}
+                {% endif %}
+                {% if user.is_authenticated and user.role == 'voluntario' and postulacion.status == 'pendiente' %}
+                    <a href="{% url 'cancelar_postulacion' postulacion.id %}">Cancelar Postulación</a>
+                    <a href="{% url 'editar_postulacion' postulacion.id %}">Editar Postulación</a>
+                {% endif %}
+                
+                {% if user.is_authenticated and user.role == 'organizacion' %}
+                    {% if postulacion.status == 'pendiente' %}
+                        <a href="{% url 'aprobar_postulacion' postulacion.id %}">Aprobar</a>
+                        <a href="{% url 'rechazar_postulacion' postulacion.id %}">Rechazar</a>
+                    {% endif %}
+                {% endif %}
+                {% if postulacion.status == 'aceptada' %}
+                    <span>Postulación aprobada</span>
+                {% endif %}
+                {% if postulacion.status == 'rechazada' %}
+                    <span>Postulación rechazada</span>
+                {% endif %}
             </td>
         </tr>
         {% empty %}

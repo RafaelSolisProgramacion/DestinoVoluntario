@@ -44,7 +44,10 @@ def dashboard(request):
         proyectos = Proyecto.objects.all()
         postulaciones = Postulacion.objects.filter(voluntario=user)
         proyectos_postulados = set(postulaciones.values_list('proyecto_id', flat=True))
-        return render(request, 'core/dashboard_voluntario.html', {'user': user, 'proyectos': proyectos, 'postulados': proyectos_postulados})
+        postulaciones_por_proyecto = {
+            p.proyecto_id: p for p in postulaciones
+        }
+        return render(request, 'core/dashboard_voluntario.html', {'user': user, 'proyectos': proyectos, 'postulados': proyectos_postulados, 'postulaciones_por_proyecto': postulaciones_por_proyecto})
         # return HttpResponse("Bienvenido al Dashboard del Voluntario")
     elif user.role == 'organizacion':
         organizacion = Organizacion.objects.get(usuario=user)

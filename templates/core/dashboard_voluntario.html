@@ -6,7 +6,7 @@
     <title>Dashboard Voluntario</title>
 </head>
 <body>
-    <h1>Bienvenido al Dashboard del Voluntario</h1>
+    <h1>Bienvenido al Dashboard del Voluntario: {{ user.username }}</h1>
     {% include 'proyectos/listar_proyectos.html' %}
     <form action="{% url 'logout' %}" method="post">
         {% csrf_token %}
