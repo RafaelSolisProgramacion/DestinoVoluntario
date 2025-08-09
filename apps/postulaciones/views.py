@@ -3,6 +3,7 @@ from django.contrib.auth.decorators import login_required
 from .forms import PostulacionForm
 from .models import Postulacion
 from apps.proyectos.models import Proyecto
+from django.utils import timezone
 
 # Create your views here.
 @login_required
@@ -17,10 +18,29 @@ def crear_postulacion(request, proyecto_id):
     if not proyecto:
         return redirect('dashboard')
     
-    # Verifica si el usuario ya ha postulado al proyecto
-    if Postulacion.objects.filter(voluntario=request.user, proyecto=proyecto).exists():
+    # Verifica si el usuario ya ha postulado al proyecto y no ha sido rechazado
+    postulacion_existente = Postulacion.objects.filter(voluntario=request.user, proyecto=proyecto).exclude(status='rechazada').first()
+
+    if postulacion_existente:
         return redirect('dashboard')
     
+    # Verifica si hay alguna postulacion rechazada.
+    postulacion_rechazada = Postulacion.objects.filter(voluntario=request.user, proyecto=proyecto, status='rechazada').first()
+
+    # Reutilizar la postulacion rechazada para respostularse.
+    if postulacion_rechazada:
+        if request.method == 'POST':
+            form = PostulacionForm(request.POST,instance=postulacion_rechazada)
+            if form.is_valid():
+                postulacion = form.save(commit=False)
+                postulacion.status = 'pendiente'
+                postulacion.applied_at = timezone.now()
+                postulacion.save()
+                return redirect('listar_postulaciones_voluntario')  # Redirige al listado de postulaciones del voluntario
+            else:
+                form = PostulacionForm(instance=postulacion_rechazada)
+            return render(request, 'postulaciones/crear_postulacion.html', {'form': form, 'proyecto': proyecto})        
+
     # Maneja el formulario de postulación
     if request.method == 'POST':
         form = PostulacionForm(request.POST)

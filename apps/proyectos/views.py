@@ -12,6 +12,37 @@ def listar_proyectos(request):
     postulaciones = Postulacion.objects.all()
     return render(request, 'proyectos/listar_proyectos.html', {'proyectos': proyectos, 'user': user, 'postulaciones': postulaciones})
 
+# Ver detalles del proyecto.
+def detalle_proyecto(request, proyecto_id):
+    proyecto = get_object_or_404(Proyecto, id=proyecto_id)
+    user = request.user
+    postulaciones = Postulacion.objects.filter(proyecto=proyecto)
+    
+    # Voluntarios aceptados
+    voluntarios_aceptados = Postulacion.objects.filter(proyecto=proyecto, status='aceptada').count()
+
+    # Postulacion usuario actual
+    postulacion_usuario = None
+    if user.is_authenticated and user.role == 'voluntario':
+        postulacion_usuario = Postulacion.objects.filter(proyecto=proyecto, voluntario=user).first()
+    
+    # Postulaciones pendientes (si es organizacion)
+    postulaciones_pendientes = []
+    if user.is_authenticated and user.role == 'organizacion':
+        if proyecto.organizacion.usuario == user:
+            postulaciones_pendientes = postulaciones.filter(status='pendiente')
+
+    context = {
+        'proyecto': proyecto,
+        'user': user,
+        'postulaciones': postulaciones,
+        'voluntarios_aceptados': voluntarios_aceptados,
+        'postulacion_usuario': postulacion_usuario,
+        'postulaciones_pendientes': postulaciones_pendientes
+    }
+
+    return render(request, 'proyectos/detalle_proyecto.html', context)
+
 @login_required
 def crear_proyecto(request):
     user = request.user

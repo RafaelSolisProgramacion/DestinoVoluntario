@@ -51,7 +51,7 @@
                 {% endif %}
             {% endif %}
         {% endif %}
-        <a href="{ url 'detalles_proyecto' proyecto.id %}">Ver Detalles</a>
+        <a href="{% url 'detalle_proyecto' proyecto.id %}">Ver Detalles</a>
     </li>
     <hr>
     {% endfor %}

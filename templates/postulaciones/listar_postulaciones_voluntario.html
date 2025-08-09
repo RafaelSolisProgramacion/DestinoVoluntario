@@ -28,7 +28,7 @@
                         <a href="{% url 'cancelar_postulacion' postulacion.id %}">Cancelar Postulación</a>
                     {% elif postulacion.status == 'rechazada' %}
                         <span>Tu postulación ha sido rechazada.</span>
-                        <a href="{% url 'crear_postulacion' proyecto.id %}">Re-Inscribirse</a>
+                        <a href="{% url 'crear_postulacion' postulacion.proyecto.id %}">Re-Inscribirse</a>
                     {% endif %}
                 {% endif %}
             </td>

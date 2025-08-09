@@ -1,0 +1,32 @@
+<h2>{{ proyecto.title }}</h2>
+
+<p><strong>Descripción:</strong> {{ proyecto.description }}</p>
+<p><strong>Organización:</strong> {{ proyecto.organizacion.name }}</p>
+<p><strong>Voluntarios Aceptados:</strong> {{ voluntarios_aceptados }}</p>
+
+{% if user.is_authenticated %}
+    <h3>Postulaciones</h3>
+    <ul>
+        {% for postulacion in postulaciones %}
+            <li>{{ postulacion.voluntario.username }} - {{ postulacion.status }}</li>
+        {% endfor %}
+    </ul>
+
+    {% if user.role == 'voluntario' %}
+        <h3>Tu Postulación</h3>
+        {% if postulacion_usuario %}
+            <p>Estado: {{ postulacion_usuario.status }}</p>
+        {% else %}
+            <p>No has postulado a este proyecto.</p>
+        {% endif %}
+    {% elif user.role == 'organizacion' %}
+        <h3>Postulaciones Pendientes</h3>
+        <ul>
+            {% for postulacion in postulaciones_pendientes %}
+                <li>{{ postulacion.voluntario.username }} - {{ postulacion.status }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+{% endif %}
+
+<a href="{% url 'dashboard' %}">Volver a la lista de proyectos</a>

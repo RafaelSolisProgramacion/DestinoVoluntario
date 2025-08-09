@@ -2,6 +2,18 @@
 <form method="post">
     {% csrf_token %}
     {{ form.as_p }}
+    {% if form.errors %}
+        <div class="error">
+            <p>Por favor, corrige los errores en el formulario.</p>
+            <ul>
+                {% for field in form %}
+                    {% for error in field.errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                {% endfor %}
+            </ul>
+        </div>
+    {% endif %}
     <button type="submit">Confirmar Postulación</button>
-    <a href="{ url 'proyecto_detalle' proyecto.id %}">Cancelar</a>
+    <a href="{% url 'detalle_proyecto' proyecto.id %}">Cancelar</a>
 </form>
