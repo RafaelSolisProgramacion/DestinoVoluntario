@@ -109,3 +109,26 @@ def reactivar_proyecto(request, proyecto_id):
         proyecto.save()
         return redirect('dashboard')  # Redirigir al dashboard de la organización
     return render(request, 'proyectos/editar_proyecto.html', {'proyecto': proyecto})
+
+# Cancelar proyecto
+@login_required
+def cancelar_proyecto(request, proyecto_id):
+    user = request.user
+    proyecto = get_object_or_404(Proyecto, id=proyecto_id)
+
+    # Verificamos que el usuario sea la organizacion dueña del proyecto
+    if user.role != 'organizacion' or proyecto.organizacion != user.organizacion:
+        return redirect('dashboard')
+
+    if request.method == 'POST':
+        confirmar = request.POST.get('confirmar_cancelacion')
+        if confirmar == 'yes':
+            proyecto.status = 'cancelado'
+            proyecto.save()
+            return redirect('dashboard')  # Redirigir al dashboard de la organización
+        else:
+            return render(request, 'proyectos/cancelar_proyecto.html', {
+                'proyecto': proyecto,
+                'error': 'Debes confirmar la cancelacion marcando la casilla.'
+                })
+    return render(request, 'proyectos/cancelar_proyecto.html', {'proyecto': proyecto})

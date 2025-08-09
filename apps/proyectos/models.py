@@ -10,6 +10,9 @@ class Proyecto(models.Model):
         ('activo', 'Activo'),
         ('cerrado', 'Cerrado'),
         ('evaluacion', 'En Evaluación'),
+        ('finalizado', 'Finalizado'),
+        ('cancelado', 'Cancelado'),
+        ('reactivado', 'Reactivado'),
     ]
 
     organizacion = models.ForeignKey(Organizacion, on_delete=models.CASCADE)
