@@ -34,7 +34,14 @@ def registrar_organizacion(request):
 
 def home(request):
     # return HttpResponse("Bienvenido a Destino Voluntario")
-    return redirect('login')
+    proyectos = Proyecto.objects.all()
+    paginate_by = 6  # Número de proyectos por página
+    if request.htmx:
+        proyectos = proyectos[:paginate_by]
+    else:
+        proyectos = proyectos[:paginate_by]
+        
+    return render(request, 'core/index.html', {'proyectos': proyectos})
 
 @login_required
 def dashboard(request):

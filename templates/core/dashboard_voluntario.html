@@ -1,11 +1,13 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard Voluntario</title>
-</head>
-<body>
+{% extends '../components/base.html' %}
+
+{% block title %}
+    - Dashboard Voluntario
+{% endblock %}
+
+
+{% block template %}
+    {% include '../components/navbar.html' %}
+
     <h1>Bienvenido al Dashboard del Voluntario: {{ user.username }}</h1>
     <form action="{% url 'logout' %}" method="post">
         {% csrf_token %}
@@ -16,7 +18,17 @@
     {% if user.is_authenticated and user.role == 'voluntario' %}
         <a href="{% url 'listar_postulaciones_voluntario' %}">Ver Mis Postulaciones</a>
     {% endif %}
-    {% include 'proyectos/listar_proyectos.html' %}
-    
-</body>
-</html>
+
+
+<div class="container">
+    <div class="row">
+        <!-- CARGAR LOS PROYECTOS EN ESTE CONTENEDOR -->
+        <div class="col-12 col-lg-8">
+            {% include '../proyectos/listar_proyectos.html' %}
+        </div>
+        <div class="d-none d-lg-block col-4">b</div>
+    </div>
+</div>
+
+{% endblock %}
+

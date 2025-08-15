@@ -1,19 +1,21 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard Organización</title>
-</head>
-<body>
-    <h1>Bienvenido al Dashboard de la Organización</h1>
+{% extends '../components/base.html' %}
+
+{% block title %}
+    - Dashboard Organización
+{% endblock %}
+
+
+{% block template %}
+    {% include '../components/navbar.html' %}
+
+    <h1>Bienvenido al Dashboard de la Organización: {{ user.username }}</h1>
     <form action="{% url 'logout' %}" method="post">
         {% csrf_token %}
         <button type="submit">Cerrar sesión</button>
     </form>
-
-    {% include 'proyectos/listar_proyectos.html' %}
     
-    <a href="{% url 'crear_proyecto' %}">Crear Nuevo Proyecto</a>
-</body>
-</html>
+    {% include 'proyectos/listar_proyectos.html' %}
+
+    <a href="{% url 'crear_proyecto' %}" class="btn btn-primary">Crear Nuevo Proyecto</a>
+
+{% endblock %}

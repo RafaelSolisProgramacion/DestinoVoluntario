@@ -10,7 +10,8 @@ def listar_proyectos(request):
     proyectos = Proyecto.objects.all()
     user = request.user
     postulaciones = Postulacion.objects.all()
-    return render(request, 'proyectos/listar_proyectos.html', {'proyectos': proyectos, 'user': user, 'postulaciones': postulaciones})
+    return render(request, 'proyectos/listar_proyectos.html', 
+                  {'proyectos': proyectos, 'user': user, 'postulaciones': postulaciones})
 
 # Ver detalles del proyecto.
 def detalle_proyecto(request, proyecto_id):

@@ -1,0 +1,62 @@
+{% load dict_filters %}
+<h2>Proyectos Disponibles</h2>
+
+{% if proyectos %}
+<ul>
+    {% for proyecto in proyectos %}
+    <li>
+        <strong>{{ proyecto.title }}</strong> - {{ proyecto.location }}<br>
+        <p>{{ proyecto.description }}</p>
+        Estado: {{ proyecto.status }}<br>
+        Fecha de Inicio: {{ proyecto.start_date }}<br>
+        Fecha de Fin: {{ proyecto.end_date }}<br>
+
+        {% if user.is_authenticated %}
+            {% if user.role == 'organizacion' %}
+                <a href="{% url 'editar_proyecto' proyecto.id %}">Editar</a>
+                <a href="{% url 'listar_postulaciones' proyecto.id %}">Ver Inscripciones</a>
+                {% if proyecto.status == 'activo' %}
+                    <a href="{% url 'cerrar_proyecto' proyecto.id %}">Cerrar Proyecto</a>
+                    <a href="{% url 'cancelar_proyecto' proyecto.id %}">Cancelar</a>
+                {% elif proyecto.status == 'cerrado' or proyecto.status == 'finalizado' or proyecto.status == 'cancelado' %}
+                    <a href="{% url 'reactivar_proyecto' proyecto.id %}">Reactivar Proyecto</a>
+                {% endif %}
+                
+            {% endif %}
+            {% if user.role == 'voluntario' %}
+
+                <!-- Verificar si el proyecto esta activo -->
+                {% if proyecto.status == 'activo' %}
+             
+                    <!-- Verificar si el voluntario ya se ha inscrito en el proyecto -->
+                    {% if proyecto.id in postulados %}
+                        <span>Ya te has postulado a este proyecto:</span>
+
+                        <!-- Mostrar opciones de edición o cancelación si la postulación está pendiente -->
+                        {% with postulacion=postulaciones_por_proyecto|dict_get:proyecto.id %}
+                        {% if postulacion.status == 'pendiente' %}
+                            <a href="{% url 'editar_postulacion' postulacion.id %}">Editar Postulación</a>
+                            <a href="{% url 'cancelar_postulacion' postulacion.id %}">Cancelar Postulación</a>
+                        {% elif postulacion.status == 'aceptada' %}
+                            <span>APROBADA.</span>
+                        {% elif postulacion.status == 'rechazada' %}
+                            <span>RECHAZADA.</span>
+                        {% endif %}
+                        {% endwith %}
+
+            
+                    {% else %}
+                    <a href="{% url 'crear_postulacion' proyecto.id %}">Inscribirse</a>
+                    {% endif %}
+                {% else %}
+                {% endif %}
+            {% endif %}
+        {% endif %}
+        <a href="{% url 'detalle_proyecto' proyecto.id %}">Ver Detalles</a>
+    </li>
+    <hr>
+    {% endfor %}
+</ul>
+{% else %}
+<p>No hay proyectos disponibles.</p>
+{% endif %}

@@ -1,0 +1,14 @@
+/* Importar una fuente de google */
+@import url('https://fonts.googleapis.com/css2?family=Archivo:wght@400;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+
+.logo {
+  font-family: 'Roboto', sans-serif;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+html,
+body{
+  font-family: 'Archivo', sans-serif;
+}
