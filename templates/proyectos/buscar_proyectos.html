@@ -1,0 +1,23 @@
+{% extends '../components/base.html' %}
+
+{% block title %}
+    - Buscar Proyectos
+{% endblock %}
+
+
+{% block template %}
+    {% include '../components/navbar.html' %}
+
+<h2>Resultados de la busqueda para {% if query %} "{{ query }}" {% endif %}:</h2>
+<div class="container">
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4" id="proyectos-grid">
+        {% include 'proyectos/listar_proyectos.html' %}
+    </div>
+    {% if not proyectos %}
+        <div class="alert alert-info" role="alert">
+            No se encontraron proyectos que coincidan con tu búsqueda.
+        </div>
+    {% endif %}
+</div>
+
+{% endblock %}

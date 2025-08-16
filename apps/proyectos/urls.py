@@ -1,8 +1,9 @@
 from django.urls import path
-from .views import listar_proyectos, crear_proyecto, editar_proyecto, cerrar_proyecto, reactivar_proyecto, detalle_proyecto, cancelar_proyecto
+from .views import listar_proyectos, crear_proyecto, editar_proyecto, cerrar_proyecto, reactivar_proyecto, detalle_proyecto, cancelar_proyecto, buscar_proyectos
 
 urlpatterns = [
     path('listar/', listar_proyectos, name='listar_proyectos'),
+    path('buscar/', buscar_proyectos, name='buscar_proyectos'),
     path('crear/', crear_proyecto, name='crear_proyecto'),
     path('editar/<int:proyecto_id>/', editar_proyecto, name='editar_proyecto'),
     path('cerrar/<int:proyecto_id>/', cerrar_proyecto, name='cerrar_proyecto'),

@@ -4,6 +4,7 @@ from .forms import ProyectoForm
 from .models import Proyecto
 from apps.organizaciones.models import Organizacion
 from apps.postulaciones.models import Postulacion
+from django.db.models import Q
 
 # Create your views here.
 def listar_proyectos(request):
@@ -133,3 +134,23 @@ def cancelar_proyecto(request, proyecto_id):
                 'error': 'Debes confirmar la cancelacion marcando la casilla.'
                 })
     return render(request, 'proyectos/cancelar_proyecto.html', {'proyecto': proyecto})
+
+def buscar_proyectos(request):
+    query = request.GET.get('q', '')
+    proyectos = Proyecto.objects.all()
+    if query:
+        proyectos = proyectos.filter(
+            Q(title__icontains=query) | 
+            Q(description__icontains=query) |
+            Q(location__icontains=query)
+        )
+    user = request.user
+    return render(
+        request, 
+        'proyectos/buscar_proyectos.html', 
+        {
+            'proyectos': proyectos, 
+            'query': query, 
+            'user': user
+        }
+    )
