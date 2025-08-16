@@ -1,11 +1,13 @@
 {% load dict_filters %}
 {% if proyectos %}
-<div class="container mt-4">
-    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
         {% for proyecto in proyectos %}
         <div class="col">
-        {% if forloop.last %}
-        <div class="card h-100 shadow-sm" hx-trigger="revealed">
+        {% if forloop.last and proyectos.has_next %}
+        <div class="card h-100 shadow-sm" 
+          hx-trigger="revealed" 
+          hx-get="{{ pagination_url }}?page={{ proyectos.number|add:1 }}" 
+          hx-target="#proyectos-grid" 
+          hx-swap="beforeend">
         {% else %}
         <div class="card h-100 shadow-sm">
         {% endif %}
@@ -51,8 +53,6 @@
         </div>
       </div>
         {% endfor %}
-    </div>
-</div>
 {% else %}
 <p>No hay proyectos disponibles.</p>
 {% endif %}

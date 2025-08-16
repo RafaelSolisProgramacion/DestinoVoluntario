@@ -6,6 +6,7 @@ from django.contrib.auth.decorators import login_required
 from apps.proyectos.models import Proyecto
 from apps.organizaciones.models import Organizacion
 from apps.postulaciones.models import Postulacion
+from django.core.paginator import Paginator
 
 # Create your views here.
 def registrar_voluntario(request):
@@ -35,17 +36,29 @@ def registrar_organizacion(request):
 def home(request):
     # return HttpResponse("Bienvenido a Destino Voluntario")
     proyectos = Proyecto.objects.all()
-    paginate_by = 6  # Número de proyectos por página
+    paginate_by = 9  # Número de proyectos por página
+    page_number = request.GET.get('page', 1)
+    paginator = Paginator(proyectos, paginate_by)
+    page_obj = paginator.get_page(page_number)
+
     if request.htmx:
-        proyectos = proyectos[:paginate_by]
+        return render(
+            request, 
+            'proyectos/listar_proyectos.html', 
+            {
+                'proyectos': page_obj,
+                'user': request.user,
+                'pagination_url': request.path  # URL para la paginación
+            }
+        )
     else:
-        proyectos = proyectos[:paginate_by]
-        
-    return render(request, 'core/index.html', {'proyectos': proyectos})
+        return render(request, 'core/index.html', {'proyectos': page_obj})
 
 @login_required
 def dashboard(request):
     user = request.user
+    paginate_by = 6
+    page_number = request.GET.get('page', 1)
     # Aquí puedes personalizar la lógica para mostrar diferentes dashboards
 
     if user.role == 'voluntario':
@@ -55,12 +68,58 @@ def dashboard(request):
         postulaciones_por_proyecto = {
             p.proyecto_id: p for p in postulaciones
         }
-        return render(request, 'core/dashboard_voluntario.html', {'user': user, 'proyectos': proyectos, 'postulados': proyectos_postulados, 'postulaciones_por_proyecto': postulaciones_por_proyecto})
+        paginator = Paginator(proyectos, paginate_by)
+        page_obj = paginator.get_page(page_number)
+
+        if request.htmx:
+            return render(
+                request, 
+                'proyectos/listar_proyectos.html', 
+                {
+                    'proyectos': page_obj,
+                    'user': user,
+                    'postulados': proyectos_postulados,
+                    'postulaciones_por_proyecto': postulaciones_por_proyecto,
+                    'pagination_url': request.path  # URL para la paginación
+                }
+            )
+        else:
+            return render(
+                request, 
+                'core/dashboard_voluntario.html', 
+                {
+                 'user': user, 
+                 'proyectos': page_obj, 
+                 'postulados': proyectos_postulados, 
+                 'postulaciones_por_proyecto': postulaciones_por_proyecto
+                 }
+            )
         # return HttpResponse("Bienvenido al Dashboard del Voluntario")
     elif user.role == 'organizacion':
         organizacion = Organizacion.objects.get(usuario=user)
         proyectos = Proyecto.objects.filter(organizacion=organizacion)
-        return render(request, 'core/dashboard_organizacion.html', {'user': user, 'proyectos': proyectos})
+        paginator = Paginator(proyectos, paginate_by)
+        page_obj = paginator.get_page(page_number)
+
+        if request.htmx:
+            return render(
+                request, 
+                'proyectos/listar_proyectos.html', 
+                {
+                    'proyectos': page_obj, 
+                    'user': user,
+                    'pagination_url': request.path  # URL para la paginación
+                }
+            )
+        else:
+            return render(
+                request, 
+                'core/dashboard_organizacion.html', 
+                {
+                    'user': user, 
+                    'proyectos': page_obj
+                }
+            )
         # return HttpResponse("Bienvenido al Dashboard de la Organización")
     else:
         return HttpResponse("Bienvenido al Dashboard General")

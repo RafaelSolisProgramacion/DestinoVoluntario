@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'apps.organizaciones',
     'apps.proyectos',
     'apps.postulaciones',
+    'django_htmx',
 ]
 
 MIDDLEWARE = [
@@ -55,6 +56,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django_htmx.middleware.HtmxMiddleware',  # Middleware para HTMX
 ]
 
 ROOT_URLCONF = 'config.urls'

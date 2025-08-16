@@ -13,9 +13,16 @@
         {% csrf_token %}
         <button type="submit">Cerrar sesión</button>
     </form>
-    
-    {% include 'proyectos/listar_proyectos.html' %}
 
     <a href="{% url 'crear_proyecto' %}" class="btn btn-primary">Crear Nuevo Proyecto</a>
+    
+    <!-- CARGAR LOS PROYECTOS EN ESTE CONTENEDOR -->
+         <div class="container">
+            <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4" id="proyectos-grid">
+                {% include 'proyectos/listar_proyectos.html' %}
+            </div>
+         </div>
+
+    
 
 {% endblock %}

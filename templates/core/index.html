@@ -12,10 +12,13 @@
 <div class="container">
     <div class="row">
         <!-- CARGAR LOS PROYECTOS EN ESTE CONTENEDOR -->
-        <div class="col-12 col-lg-8">
-            {% include 'proyectos/listar_proyectos.html' %}
-        </div>
-        <div class="d-none d-lg-block col-4">b</div>
+         <div class="container">
+            <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4" id="proyectos-grid">
+                {% include 'proyectos/listar_proyectos.html' %}
+            </div>
+         </div>
+        
+        <div class="d-none d-lg-block col-4">Seccion para tags</div>
     </div>
 </div>
 
