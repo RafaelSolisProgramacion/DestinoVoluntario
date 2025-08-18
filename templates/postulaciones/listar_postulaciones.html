@@ -1,55 +1,87 @@
-<h2>Postulaciones para {{ proyecto.title }}</h2>
+{% extends '../components/base.html' %}
 
-<table>
-    <thead>
-        <tr>
-            <th>Usuario</th>
-            <th>Estado</th>
-            <th>Fecha de Postulación</th>
-            <th>Motivación</th>
-            <th>Acciones</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for postulacion in postulaciones %}
-        <tr>
-            <td>{{ postulacion.voluntario.username }}</td>
-            <td>{{ postulacion.status }}</td>
-            <td>{{ postulacion.applied_at }}</td>
-            <td>{{ postulacion.motivation|default:"Sin mensaje" }}</td>
-            <td>
-                {% if user.is_authenticated and user.role == 'voluntario' %}
-                    {% if postulacion.status == 'pendiente' %}
-                        <span>Tu postulación está pendiente.</span>
-                        <a href="{% url 'cancelar_postulacion' postulacion.id %}">Cancelar Postulación</a>
-                        <a href="{% url 'editar_postulacion' postulacion.id %}">Editar Postulación</a>
-                    {% elif postulacion.status == 'aceptada' %}
-                        <span>Tu postulación ha sido aceptada.</span>
-                    {% elif postulacion.status == 'rechazada' %}
-                        <span>Tu postulación ha sido rechazada.</span>
-                    {% endif %}
-                {% endif %}
-                {% if user.is_authenticated and user.role == 'organizacion' %}
-                    {% if postulacion.status == 'pendiente' %}
-                        <a href="{% url 'aprobar_postulacion' postulacion.id %}">Aprobar</a>
-                        <a href="{% url 'rechazar_postulacion' postulacion.id %}">Rechazar</a>
-                    {% endif %}
-                    {% if postulacion.status == 'aceptada' %}
-                        <span>Postulación Aceptada</span>
-                        <a href="{% url 'rechazar_postulacion' postulacion.id %}">Rechazar</a>
-                    {% elif postulacion.status == 'rechazada' %}
-                        <span>Postulación Rechazada</span>
-                        <a href="{% url 'aprobar_postulacion' postulacion.id %}">Aprobar</a>
-                    {% endif %}
-                {% endif %}
-            </td>
-        </tr>
-        {% empty %}
-        <tr>
-            <td colspan="5">No hay postulaciones para este proyecto.</td>
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
+{% block title %}Postulaciones{% endblock %}
 
-<a href="{% url 'dashboard' %}">Volver a Proyectos</a>
+{% block template %}
+    {% include '../components/navbar.html' %}
+    
+    {% if not user.is_authenticated %}
+        <div class="container mt-5 text-center">
+            <p class="text-center">Debes iniciar sesión para ver las postulaciones.</p>
+            <p class="text-center"><a href="{% url 'login' %}" class="btn btn-primary">Iniciar sesión</a></p>
+        </div>
+    {% else %}
+    <div class="container my-4">
+        <h2 class="mb-4 text-center">Postulaciones para {{ proyecto.title }}</h2>
+
+    <div class="table-responsive">
+        <table class="table table-striped table-hover align-middle">
+            <thead class="table-dark">
+                <tr>
+                    <th>Usuario</th>
+                    <th>Estado</th>
+                    <th>Fecha de Postulación</th>
+                    <th>Motivación</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for postulacion in postulaciones %}
+                <tr>
+                    <td>{{ postulacion.voluntario.username }}</td>
+                    <td>
+                        {% if postulacion.status == 'pendiente' %}
+                            <span class="badge bg-warning text-dark">Pendiente</span>
+                        {% elif postulacion.status == 'aceptada' %}
+                            <span class="badge bg-success">Aceptada</span>
+                        {% elif postulacion.status == 'rechazada' %}
+                            <span class="badge bg-danger">Rechazada</span>
+                        {% else %}
+                            <span class="badge bg-secondary">{{ postulacion.status }}</span>
+                        {% endif %}
+                    </td>
+                    <td>{{ postulacion.applied_at|date:"d/m/Y H:i" }}</td>
+                    <td>{{ postulacion.motivation|default:"Sin mensaje" }}</td>
+                    <td>
+                        {% if user.is_authenticated and user.role == 'voluntario' %}
+                            {% if postulacion.status == 'pendiente' %}
+                                <span class="d-block mb-1 text-warning">Tu postulación está pendiente.</span>
+                                <a href="{% url 'cancelar_postulacion' postulacion.id %}" class="btn btn-sm btn-outline-danger mb-1">Cancelar</a>
+                                <a href="{% url 'editar_postulacion' postulacion.id %}" class="btn btn-sm btn-outline-primary mb-1">Editar</a>
+                            {% elif postulacion.status == 'aceptada' %}
+                                <span class="d-block mb-1 text-success">Tu postulación ha sido aceptada.</span>
+                            {% elif postulacion.status == 'rechazada' %}
+                                <span class="d-block mb-1 text-danger">Tu postulación ha sido rechazada.</span>
+                            {% endif %}
+                        {% endif %}
+                        {% if user.is_authenticated and user.role == 'organizacion' %}
+                            {% if postulacion.status == 'pendiente' %}
+                                <a href="{% url 'aprobar_postulacion' postulacion.id %}" class="btn btn-sm btn-outline-success mb-1">Aprobar</a>
+                                <a href="{% url 'rechazar_postulacion' postulacion.id %}" class="btn btn-sm btn-outline-danger mb-1">Rechazar</a>
+                            {% endif %}
+                            {% if postulacion.status == 'aceptada' %}
+                                <span class="d-block mb-1 text-success">Postulación Aceptada</span>
+                                <a href="{% url 'rechazar_postulacion' postulacion.id %}" class="btn btn-sm btn-outline-danger mb-1">Rechazar</a>
+                            {% elif postulacion.status == 'rechazada' %}
+                                <span class="d-block mb-1 text-danger">Postulación Rechazada</span>
+                                <a href="{% url 'aprobar_postulacion' postulacion.id %}" class="btn btn-sm btn-outline-success mb-1">Aprobar</a>
+                            {% endif %}
+                        {% endif %}
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="5" class="text-center text-muted">No hay postulaciones para este proyecto.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% endif %}
+
+<div class="text-center mt-4">
+    <a href="{% url 'dashboard' %}" class="btn btn-secondary">Volver a Proyectos</a>
+</div>
+
+{% include '../components/footer.html' %}
+{% endblock %}

@@ -1,10 +1,83 @@
-<h2>{{ proyecto.title }}</h2>
+{% extends '../components/base.html' %}
+{% load static %}
+{% load dict_filters %}
 
-<p><strong>Descripción:</strong> {{ proyecto.description }}</p>
-<p><strong>Organización:</strong> {{ proyecto.organizacion.name }}</p>
-<p><strong>Voluntarios Aceptados:</strong> {{ voluntarios_aceptados }}</p>
+{% block title %}Detalles del Proyecto{% endblock %}
 
-{% if user.is_authenticated %}
+{% block template %}
+{% include '../components/navbar.html' %}
+
+<div class="container my-4">
+    <div class="card mb-3 text-center" style="max-width: 800px; margin: 0 auto;">
+    <div class="row g-0">
+        <div class="col-md-4">
+        <img src="{% static 'images/logo.png' %}" class="img-fluid rounded-start" alt="Imagen del Proyecto">
+        </div>
+        <div class="col-md-8">
+        <div class="card-body">
+            <h5 class="card-title"><strong>Proyecto: </strong>{{ proyecto.title }}</h5>
+            <p class="card-text"><strong>Descripción: </strong>{{ proyecto.description }}</p>
+            <p class="card-text"><small class="text-body-secondary">Voluntarios Aceptados: {{ voluntarios_aceptados }}</small></p>
+            <p class="card-text"><small class="text-body-secondary">Organización: {{ proyecto.organizacion.name }}</small></p>
+            <p class="card-text"><small class="text-body-secondary">Fecha de Inicio: {{ proyecto.start_date|date:"d M Y" }}</small></p>
+            <p class="card-text"><small class="text-body-secondary">Fecha de Finalizacion: {{ proyecto.end_date|date:"d M Y" }}</small></p>
+            <p class="card-text"><small class="text-body-secondary">Estado: {{ proyecto.status }}</small></p>
+            <p class="card-text"><small class="text-body-secondary">Ubicación: {{ proyecto.location }}</small></p>
+
+            {% if user.is_authenticated %} 
+                {% if user.role == 'organizacion' %}
+                <a href="{% url 'editar_proyecto' proyecto.id %}" class="btn btn-outline-primary btn-sm">Editar</a>
+                <a href="{% url 'listar_postulaciones' proyecto.id %}" class="btn btn-outline-secondary btn-sm">Ver postulaciones</a>
+                {% if proyecto.status == 'activo' %}
+                    <a href="{% url 'cerrar_proyecto' proyecto.id %}" class="btn btn-outline-danger btn-sm">Cerrar</a>
+                    <!-- Enviar un email a todos los postulantes aceptados -->
+                    <a href="mailto:{{ postulantes_aceptados|join:',' }}?subject=Actualización sobre el proyecto {{ proyecto.title }}&body=Hola, se ha actualizado el estado del proyecto." class="btn btn-outline-info btn-sm d-block mt-3">Notificar a postulantes aceptados</a>
+                {% elif proyecto.status == 'cerrado' or proyecto.status == 'finalizado' or proyecto.status == 'cancelado' %}
+                    <a href="{% url 'reactivar_proyecto' proyecto.id %}" class="btn btn-outline-success btn-sm">Reactivar</a>
+                {% endif %}
+                {% elif user.role == 'voluntario' and proyecto.status == 'activo' %}
+                    {% if postulacion_usuario %}
+                        <p class="text-success">Ya te has postulado a este proyecto.</p>
+                        {% if postulacion_usuario.status == 'pendiente' %}
+                            <a href="{% url 'editar_postulacion' postulacion_usuario.id %}" class="btn btn-warning btn-sm">Editar postulación</a>
+                            <a href="{% url 'cancelar_postulacion' postulacion_usuario.id %}" class="btn btn-outline-danger btn-sm">Cancelar Postulación</a>
+                        {% elif postulacion_usuario.status == 'aceptada' %}
+                            <span class="badge bg-success">Postulación aprobada</span>
+                        {% elif postulacion_usuario.status == 'rechazada' %}
+                            <span class="badge bg-danger">Postulación rechazada</span>
+                        {% endif %}
+                    {% else %}
+                    <a href="{% url 'crear_postulacion' proyecto.id %}" class="btn btn-primary btn-sm">Postularse</a>
+                    {% endif %}
+                    <a href="mailto:{{ proyecto.organizacion.usuario.email }}?subject=Consulta sobre la postulación a {{ proyecto.title }}&body=Hola, me gustaría saber más sobre mi postulación." class="btn btn-outline-info btn-sm d-block mt-3">Contactar Organización</a>
+                {% endif %}
+            {% else %}
+                <a href="{% url 'login' %}" class="btn btn-outline-info btn-sm">Inicia sesión para postularte</a>
+            {% endif %}
+
+            <!-- {% if user.is_authenticated %}
+                {% if user.role == 'voluntario' %}
+                    <a href="{% url 'crear_postulacion' proyecto.id %}" class="btn btn-primary">Postularse</a>
+                {% elif user.role == 'organizacion' %}
+                    <a href="{% url 'editar_proyecto' proyecto.id %}" class="btn btn-secondary">Editar Proyecto</a>
+                {% endif %}
+            {% else %}
+                <p class="text-center">Inicia sesión para postularte o editar el proyecto.</p>
+                <p class="text-center"><a href="{% url 'login' %}" class="btn btn-primary">Iniciar sesión</a></p>
+            {% endif %} -->
+        </div>
+        </div>
+    </div>
+    </div>
+
+    <div class="text-center mt-4">
+        <a href="{% url 'dashboard' %}" class="btn btn-secondary">Volver a Proyectos</a>
+    </div>
+</div>
+{% include '../components/footer.html' %}
+{% endblock %}
+
+<!-- {% if user.is_authenticated %}
     <h3>Postulaciones</h3>
     <ul>
         {% for postulacion in postulaciones %}
@@ -27,6 +100,6 @@
             {% endfor %}
         </ul>
     {% endif %}
-{% endif %}
+{% endif %} -->
 
 <a href="{% url 'dashboard' %}">Volver a la lista de proyectos</a>

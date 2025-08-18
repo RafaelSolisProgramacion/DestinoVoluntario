@@ -10,6 +10,9 @@ from django.core.paginator import Paginator
 
 # Create your views here.
 def registrar_voluntario(request):
+    if request.user.is_authenticated:
+        return redirect('home')  
+    
     if request.method == 'POST':
         form = RegistroVoluntarioForm(request.POST)
         if form.is_valid():
@@ -22,6 +25,9 @@ def registrar_voluntario(request):
     return render(request, 'core/registrar_voluntario.html', {'form': form})
 
 def registrar_organizacion(request):
+    if request.user.is_authenticated:
+        return redirect('home')
+    
     if request.method == 'POST':
         form = RegistroOrganizacionForm(request.POST)
         if form.is_valid():

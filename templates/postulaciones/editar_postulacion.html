@@ -1,18 +1,47 @@
-<h2>Editar Postulación para {{ proyecto.title }}</h2>
+{% extends '../components/base.html' %}
 
-<form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Guardar Cambios</button>
-</form>
+{% block title %}Editar Postulación{% endblock %}
 
-{% if user.is_authenticated and user.role == 'voluntario' %}
-    <a href="{% url 'listar_postulaciones_voluntario' %}">Volver a mi lista de postulaciones</a>
-{% endif %}
+{% block template %}
+    {% include '../components/navbar.html' %}
 
-{% if user.is_authenticated and user.role == 'organizacion' %}
-    {% if postulacion.status == 'pendiente' %}
-        <a href="{% url 'aprobar_postulacion' postulacion.id %}">Aprobar</a>
-        <a href="{% url 'rechazar_postulacion' postulacion.id %}">Rechazar</a>
+    {% if not user.is_authenticated %}
+        <div class="container mt-5 text-center">
+            <p class="text-center">Debes iniciar sesión para editar una postulación.</p>
+            <p class="text-center"><a href="{% url 'login' %}" class="btn btn-primary">Iniciar sesión</a></p>
+        </div>
+    {% else %}
+        <div class="container my-4 text-center card p-4 shadow-sm col-8">
+            <h1 class="text-center mb-4">Editar Postulación para el proyecto: {{ proyecto.title }}</h1>
+            
+            {% if form.non_field_errors %}
+                <div class="alert alert-danger">
+                    {{ form.non_field_errors }}
+                </div>
+            {% endif %}
+
+            <form method="post" enctype="multipart/form-data" class="card p-4 shadow-sm text-center" >
+                {% csrf_token %}
+                {% for field in form %}
+                    <div class="mb-3">
+                        {{ field.label_tag }}
+                        {{ field }}
+                        {% if field.errors %}
+                        <div class="text-danger small">{{ field.errors|striptags }}</div>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+
+                <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+            </form>
+
+            <div class="mt-4">
+                <a href="{% url 'listar_postulaciones_voluntario' %}" class="btn btn-secondary">Volver a mi lista de postulaciones</a>
+            </div>
+
+
+        </div>
     {% endif %}
-{% endif %}
+
+{% include '../components/footer.html' %}
+{% endblock %}

@@ -1,13 +1,54 @@
-<h2>Crear Proyecto</h2>
+{% extends '../components/base.html' %}
+
+{% block title %}Crear Proyecto{% endblock %}
+
+{% block template %}
+    {% include '../components/navbar.html' %}
+    
+    {% if not user.is_authenticated %}
+        <div class="container mt-5 text-center">
+            <p class="text-center">Debes iniciar sesión para crear un proyecto.</p>
+            <p class="text-center"><a href="{% url 'login' %}" class="btn btn-primary">Iniciar sesión</a></p>
+        </div>
+    {% else %}
+        <div class="container my-4 text-center card p-4 shadow-sm col-8">
+            <h1 class="text-center mb-4">Crear Proyecto</h1>
+            <form method="post" enctype="multipart/form-data" class="card p-4 shadow-sm text-center" action="{% url 'crear_proyecto' %}">
+                {% if form.non_field_errors %}
+                    <div class="alert alert-danger">
+                        {{ form.non_field_errors }}
+                    </div>
+                {% endif %}
+                {% csrf_token %}
+                {% for field in form %}
+                    <div class="mb-3">
+                        {{ field.label_tag }}
+                        {{ field }}
+                        {% if field.errors %}
+                        <div class="text-danger small">{{ field.errors|striptags }}</div>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+
+                <button type="submit" class="btn btn-primary">Crear Proyecto</button>
+            </form>
+        </div>
+    {% endif %}
+    
+    {% include '../components/footer.html' %}
+{% endblock %}
+
+
+<!-- <h2>Crear Proyecto</h2>
 <form action="{% url 'crear_proyecto' %}" method="post">
     {% csrf_token %}
     {{ form.as_p }}
     <button type="submit">Crear Proyecto</button>
-</form>
+</form> -->
 
 
 
-<!-- Este codigo de abajo fue agregado por copilot en el IDE si da error borrarlo -->
+<!-- Este codigo de abajo fue agregado por copilot en el IDE si da error borrarlo
 {% if form.errors %}
     <div class="error">
         <p>Por favor corrige los errores a continuación:</p>
@@ -28,4 +69,4 @@
 {% endif %}
 {% if not success %}
     <p>Por favor completa el formulario para crear un nuevo proyecto.</p>
-{% endif %}
+{% endif %} -->

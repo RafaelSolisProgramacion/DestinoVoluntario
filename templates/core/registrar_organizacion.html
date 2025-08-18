@@ -1,16 +1,26 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registrar Organización</title>
-</head>
-<body>
-    <h1>Registrate como Organización</h1>
-    <form method="post">
+{% extends '../components/base.html' %}
+
+{% block title %}Registrar Organización{% endblock %}
+
+{% block template %}
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-md-4">
+      <h1 class="mb-4 text-center">Registrarse como Organización</h1>
+      <form method="post" class="card p-4 shadow-sm">
         {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Registrarse</button>
-    </form>
-</body>
-</html>
+        {% for field in form %}
+          <div class="mb-3">
+            {{ field.label_tag }}
+            {{ field }}
+            {% if field.errors %}
+              <div class="text-danger small">{{ field.errors|striptags }}</div>
+            {% endif %}
+          </div>
+        {% endfor %}
+        <button type="submit" class="btn btn-primary w-100">Registrarse</button>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -9,19 +9,44 @@ from django.db.models import Q
 # Create your views here.
 def listar_proyectos(request):
     proyectos = Proyecto.objects.all()
+    organizaciones = Organizacion.objects.all()
     user = request.user
     postulaciones = Postulacion.objects.all()
-    return render(request, 'proyectos/listar_proyectos.html', 
-                  {'proyectos': proyectos, 'user': user, 'postulaciones': postulaciones})
+
+    # Filtro por organización
+    organizacion_id = request.GET.get('organizacion')
+    if organizacion_id and organizacion_id != 'todas':
+        proyectos = proyectos.filter(organizacion_id=organizacion_id)
+
+    # Filtro por estado
+    estado = request.GET.get('estado')
+    if estado:
+        proyectos = proyectos.filter(status=estado)
+
+    # Ordenar
+    ordenar = request.GET.get('ordenar', 'fecha-inicio')
+    if ordenar == 'fecha-inicio':
+        proyectos = proyectos.order_by('start_date')
+    elif ordenar == 'fecha-fin':
+        proyectos = proyectos.order_by('end_date')
+
+    return render(request, 'proyectos/listado_proyectos.html', 
+                  {
+                      'proyectos': proyectos, 
+                      'user': user, 
+                      'postulaciones': postulaciones,
+                      'organizaciones': organizaciones
+                  })
 
 # Ver detalles del proyecto.
 def detalle_proyecto(request, proyecto_id):
     proyecto = get_object_or_404(Proyecto, id=proyecto_id)
     user = request.user
     postulaciones = Postulacion.objects.filter(proyecto=proyecto)
-    
+
     # Voluntarios aceptados
     voluntarios_aceptados = Postulacion.objects.filter(proyecto=proyecto, status='aceptada').count()
+    postulantes_aceptados = Postulacion.objects.filter(proyecto=proyecto, status='aceptada').values_list('voluntario__email', flat=True)
 
     # Postulacion usuario actual
     postulacion_usuario = None
@@ -40,7 +65,8 @@ def detalle_proyecto(request, proyecto_id):
         'postulaciones': postulaciones,
         'voluntarios_aceptados': voluntarios_aceptados,
         'postulacion_usuario': postulacion_usuario,
-        'postulaciones_pendientes': postulaciones_pendientes
+        'postulaciones_pendientes': postulaciones_pendientes,
+        'postulantes_aceptados': postulantes_aceptados
     }
 
     return render(request, 'proyectos/detalle_proyecto.html', context)

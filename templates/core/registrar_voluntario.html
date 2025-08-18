@@ -1,16 +1,45 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registro de Voluntario</title>
-</head>
-<body>
-    <h1>Registrate como Voluntario</h1>
-    <form method="post">
+{% extends '../components/base.html' %}
+
+{% block title %}Registrar Voluntario{% endblock %}
+
+{% block template %}
+{% include '../components/navbar.html' %}
+
+{% if user.is_authenticated %}
+<div class="container mt-5">
+  <div class="alert alert-info" role="alert">
+    Ya estás registrado como {{ user.username }}. Puedes ir a tu <a href="{% url 'dashboard_voluntario' %}">Dashboard</a>.
+  </div>
+{% else %}
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-md-4">
+      <h1 class="mb-4 text-center">Registrarse como Voluntario</h1>
+      <form method="post" class="card p-4 shadow-sm">
         {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Registrarse</button>
-    </form>
-</body>
-</html>
+        {% for field in form %}
+          <div class="mb-3">
+            {{ field.label_tag }}
+            {{ field }}
+            {% if field.errors %}
+              <div class="text-danger small">{{ field.errors|striptags }}</div>
+            {% endif %}
+          </div>
+        {% endfor %}
+        <button type="submit" class="btn btn-primary w-100">Registrarse</button>
+      </form>
+    </div>
+  </div>
+</div>
+{% endif %}
+
+{% if messages %}
+  <div class="container mt-5">
+    {% for message in messages %}
+      <div class="alert alert-{{ message.tags }}" role="alert">
+        {{ message }}
+      </div>
+    {% endfor %}
+  </div>
+{% endif %}
+{% endblock %}

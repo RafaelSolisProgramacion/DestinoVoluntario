@@ -1,0 +1,65 @@
+{% extends '../components/base.html' %}
+
+{% block title %}
+    - Página de Inicio
+{% endblock %}
+
+
+{% block template %}
+    {% include '../components/navbar.html' %}
+
+    <!-- ## Un formulario para la lista de proyectos a mostrar, -->
+
+    <div class="container my-4">
+        <h1 class="text-center mb-4">Lista de Proyectos</h1>
+        <h2 class="text-center mb-4">Filtrar Proyectos</h2>
+        <form id="filtro-proyectos" class="mb-4 p-3 border rounded ">
+            <!-- las opciones se cargan dinámicamente y la primera opcion es Todas las organizaciones -->
+            <select class="form-select" aria-label="Filtrar por organización" name="organizacion">
+                <option value="todas">Todas las organizaciones</option>
+            {% for org in organizaciones %}
+                <option value="{{ org.id }}" {% if org.id|stringformat:"s" == request.GET.organizacion|stringformat:"s" %}selected{% endif %}>{{ org.name }}</option>
+            {% endfor %}
+            </select>
+
+        
+            <!-- un radio para ordenar por fecha de inicio o fecha final-->
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="ordenar" id="ordenar-fecha-inicio" value="fecha-inicio" {% if request.GET.ordenar == "fecha-inicio" or not request.GET.ordenar %}checked{% endif %}>
+                <label class="form-check-label" for="ordenar-fecha-inicio">
+                    Ordenar por fecha de inicio
+                </label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="ordenar" id="ordenar-fecha-fin" value="fecha-fin" {% if request.GET.ordenar == "fecha-fin" %}checked{% endif %}>
+                <label class="form-check-label" for="ordenar-fecha-fin">
+                    Ordenar por fecha de fin
+                </label>
+            </div>
+
+            <!-- un select para filtrar por estado -->
+            <select class="form-select" name="estado" aria-label="Filtrar por estado">
+                <option value="">Selecciona un estado (Todos)</option>
+                <option value="activo" {% if request.GET.estado == "activo" %}selected{% endif %}>Activo</option>
+                <option value="cerrado" {% if request.GET.estado == "cerrado" %}selected{% endif %}>Cerrado</option>
+                <option value="cancelado" {% if request.GET.estado == "cancelado" %}selected{% endif %}>Cancelado</option>
+            </select>
+
+            <button type="submit" class="btn btn-primary my-4">Filtrar</button>
+        </form>
+    </div>
+
+    <h2 class="text-center mb-4">Lista de Proyectos</h2>
+    <div class="container">
+        <div class="row">
+            <!-- CARGAR LOS PROYECTOS EN ESTE CONTENEDOR -->
+            <div class="container mb-5">
+                <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4" id="proyectos-grid">
+                    {% include 'proyectos/listar_proyectos.html' %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% include '../components/footer.html' %}
+{% endblock %}

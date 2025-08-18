@@ -1,19 +1,51 @@
-<h2>Postularse al proyecto: {{ proyecto.title }}</h2>
-<form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    {% if form.errors %}
-        <div class="error">
-            <p>Por favor, corrige los errores en el formulario.</p>
-            <ul>
+{% extends '../components/base.html' %}
+
+{% block title %}Crear Postulación{% endblock %}
+
+{% block template %}
+    {% include '../components/navbar.html' %}
+
+    {% if not user.is_authenticated %}
+        <div class="container mt-5 text-center">
+            <p class="text-center">Debes iniciar sesión para crear una postulación.</p>
+            <p class="text-center"><a href="{% url 'login' %}" class="btn btn-primary">Iniciar sesión</a></p>
+        </div>
+    {% else %}
+        <div class="container my-4 text-center card p-4 shadow-sm col-8">
+            <h1 class="text-center mb-4">Postularse para el proyecto: {{ proyecto.title }}</h1>
+            <p class="text-center">Descripción: {{ proyecto.description }}</p>
+            <p class="text-center">Por favor, completa el siguiente formulario para postularte al proyecto.</p>
+            
+            {% if form.non_field_errors %}
+                <div class="alert alert-danger">
+                    {{ form.non_field_errors }}
+                </div>
+            {% endif %}
+
+            <form method="post" enctype="multipart/form-data" class="card p-4 shadow-sm text-center" action="{% url 'crear_postulacion' proyecto.id %}">
+                {% if form.non_field_errors %}
+                    <div class="alert alert-danger">
+                        {{ form.non_field_errors }}
+                    </div>
+                {% endif %}
+                {% csrf_token %}
                 {% for field in form %}
-                    {% for error in field.errors %}
-                        <li>{{ error }}</li>
-                    {% endfor %}
+                    <div class="mb-3">
+                        {{ field.label_tag }}
+                        {{ field }}
+                        {% if field.errors %}
+                        <div class="text-danger small">{{ field.errors|striptags }}</div>
+                        {% endif %}
+                    </div>
                 {% endfor %}
-            </ul>
+
+                <button type="submit" class="btn btn-primary">Confirmar Postulación</button>
+             </form>
+
+             <br>
+             <p class="text-center"><a href="{% url 'detalle_proyecto' proyecto.id %}" class="btn btn-secondary">Cancelar</a></p>
         </div>
     {% endif %}
-    <button type="submit">Confirmar Postulación</button>
-    <a href="{% url 'detalle_proyecto' proyecto.id %}">Cancelar</a>
-</form>
+    
+    {% include '../components/footer.html' %}
+{% endblock %}
