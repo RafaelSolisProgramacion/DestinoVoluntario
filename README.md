@@ -39,8 +39,12 @@ DESTINOVOLUNTARIO/
 
 ## Instalacion rapidaa
 
-git clone https://github.com/RafaelSolisProgramacion/DestinoVoluntario.git
-cd destinovoluntario
-pipenv isntall
-python manage.py migrate
-python manage.py runserver
+1- git clone https://github.com/RafaelSolisProgramacion/DestinoVoluntario.git (el usuario debe tener permiso de colaborador en el repo)
+
+2- cd destinovoluntario
+3- pipenv install (instala las dependecias del proyecto, incluyendo django y django-htmx)
+    pipenv install Django (si Django no esta instalado, por lo general esta)
+    pipenv install django-htmx (solo si da error del modulo faltante htmx)
+4- pipenv shell
+python manage.py migrate (sino se ha cargado el archivo SQLite con el clone)
+5- python manage.py runserver
