@@ -37,7 +37,7 @@ DESTINOVOLUNTARIO/
 - 'static/': estilos y scripts
 - 'media/': archivos subidos por usuarios
 
-## Instalacion rapida
+## Instalacion rapidaa
 
 git clone https://github.com/RafaelSolisProgramacion/DestinoVoluntario.git
 cd destinovoluntario
