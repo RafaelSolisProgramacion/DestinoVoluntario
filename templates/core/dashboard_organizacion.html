@@ -6,23 +6,27 @@
 
 
 {% block template %}
-    {% include '../components/navbar.html' %}
+<style>
+    body {
+        background: #f8f6f2;
+        min-height: 100vh;
+    }
+</style>
+{% include '../components/navbar.html' %}
 
-    <h1>Bienvenido al Dashboard de la Organización: {{ user.username }}</h1>
-    <form action="{% url 'logout' %}" method="post">
-        {% csrf_token %}
-        <button type="submit">Cerrar sesión</button>
-    </form>
-
-    <a href="{% url 'crear_proyecto' %}" class="btn btn-primary">Crear Nuevo Proyecto</a>
-    
-    <!-- CARGAR LOS PROYECTOS EN ESTE CONTENEDOR -->
-         <div class="container">
-            <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4" id="proyectos-grid">
-                {% include 'proyectos/listar_proyectos.html' %}
-            </div>
-         </div>
-
-    
-
+<div class="container py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="fw-bold mb-0">Bienvenido, {{ user.username }}</h2>
+        <form action="{% url 'logout' %}" method="post" class="d-inline">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-outline-danger">Cerrar sesión</button>
+        </form>
+    </div>
+    <div class="mb-4">
+        <a href="{% url 'crear_proyecto' %}" class="btn btn-primary">Crear Nuevo Proyecto</a>
+    </div>
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4" id="proyectos-grid">
+        {% include 'proyectos/listar_proyectos.html' %}
+    </div>
+</div>
 {% endblock %}
