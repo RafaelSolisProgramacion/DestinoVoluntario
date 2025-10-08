@@ -7,7 +7,7 @@
     <li>
         <strong>{{ proyecto.title }}</strong> - {{ proyecto.location }}<br>
         <p>{{ proyecto.description }}</p>
-        Estado: {{ proyecto.status }}<br>
+    Estado: {% if proyecto.status == 'activo' %}Activo{% else %}Inactivo{% endif %}<br>
         Fecha de Inicio: {{ proyecto.start_date }}<br>
         Fecha de Fin: {{ proyecto.end_date }}<br>
 
@@ -15,13 +15,14 @@
             {% if user.role == 'organizacion' %}
                 <a href="{% url 'editar_proyecto' proyecto.id %}">Editar</a>
                 <a href="{% url 'listar_postulaciones' proyecto.id %}">Ver Inscripciones</a>
-                {% if proyecto.status == 'activo' %}
-                    <a href="{% url 'cerrar_proyecto' proyecto.id %}">Cerrar Proyecto</a>
-                    <a href="{% url 'cancelar_proyecto' proyecto.id %}">Cancelar</a>
-                {% elif proyecto.status == 'cerrado' or proyecto.status == 'finalizado' or proyecto.status == 'cancelado' %}
-                    <a href="{% url 'reactivar_proyecto' proyecto.id %}">Reactivar Proyecto</a>
-                {% endif %}
-                
+                <form method="post" action="{% url 'cambiar_estado_proyecto' proyecto.id %}" style="display:inline;">
+                    {% csrf_token %}
+                    {% if proyecto.status == 'activo' %}
+                        <button type="submit" name="estado" value="inactivo" class="btn btn-outline-secondary btn-sm" style="margin-left:8px;">Marcar como inactivo</button>
+                    {% else %}
+                        <button type="submit" name="estado" value="activo" class="btn btn-outline-success btn-sm" style="margin-left:8px;">Marcar como activo</button>
+                    {% endif %}
+                </form>
             {% endif %}
             {% if user.role == 'voluntario' %}
 
