@@ -1,3 +1,18 @@
+from django.shortcuts import get_object_or_404, redirect
+from django.contrib.auth.decorators import login_required
+from django.views.decorators.http import require_POST
+from .models import Proyecto
+
+@login_required
+@require_POST
+def cambiar_estado_proyecto(request, proyecto_id):
+    proyecto = get_object_or_404(Proyecto, id=proyecto_id)
+    if request.user.role == 'organizacion':
+        nuevo_estado = request.POST.get('estado')
+        if nuevo_estado in ['activo', 'inactivo']:
+            proyecto.status = nuevo_estado
+            proyecto.save()
+    return redirect(request.META.get('HTTP_REFERER', 'listar_proyectos'))
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from .forms import ProyectoForm
