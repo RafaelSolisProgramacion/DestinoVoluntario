@@ -6,6 +6,7 @@ name = "pypi"
 [packages]
 django = "*"
 django-htmx = "*"
+django-widget-tweaks = "*"
 
 [dev-packages]
 

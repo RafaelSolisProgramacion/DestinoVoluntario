@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'apps.proyectos',
     'apps.postulaciones',
     'django_htmx',
+    'widget_tweaks',
 ]
 
 MIDDLEWARE = [
