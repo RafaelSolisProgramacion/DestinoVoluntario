@@ -44,15 +44,15 @@
         <form action="{% url 'logout' %}" method="post" class="m-0">
           {% csrf_token %}
           {% if user.role == 'voluntario' %}
-            <button type="submit" class="btn btn-sm rounded-pill d-flex align-items-center" 
-                    style="background-color: rgba(229, 52, 69, 0.6); color: #fff; border: none; gap:.5rem;"
+            <button type="submit" class="btn btn-sm rounded-pill d-flex align-items-center"
+                    style="background-color: rgba(235, 244, 243, 0.986); color: #0d6efd; border: none; gap:.5rem;"
                     data-bs-toggle="tooltip" data-bs-placement="bottom" title="Cerrar sesión">
               <i class="bi bi-box-arrow-right"></i>
               <span class="d-none d-md-inline ms-2">Cerrar sesión</span>
             </button>
           {% else %}
-            <button type="submit" class="btn btn-sm rounded-pill d-flex align-items-center" 
-                    style="background-color: rgba(13,110,253,0.6); color: #fff; border: none; gap:.5rem;"
+            <button type="submit" class="btn btn-sm d-flex align-items-center"
+                    style="background: none; color: #0d6efd; border: none; gap:.5rem;"
                     data-bs-toggle="tooltip" data-bs-placement="bottom" title="Cerrar sesión">
               <i class="bi bi-box-arrow-right"></i>
               <span class="d-none d-md-inline ms-2">Cerrar sesión</span>

@@ -17,10 +17,7 @@
 <div class="container py-4">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h2 class="fw-bold mb-0">Bienvenido, {{ user.username }}</h2>
-        <form action="{% url 'logout' %}" method="post" class="d-inline">
-            {% csrf_token %}
-            <button type="submit" class="btn btn-outline-danger">Cerrar sesión</button>
-        </form>
+        {# Botón de cerrar sesión eliminado, ahora está en el navbar #}
     </div>
     <div class="mb-4">
         <a href="{% url 'crear_proyecto' %}" class="btn btn-primary">Crear Nuevo Proyecto</a>
