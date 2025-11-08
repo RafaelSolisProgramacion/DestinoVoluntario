@@ -1,5 +1,5 @@
 {% load static %}
-<nav class="navbar navbar-expand-lg bg-body-tertiary">
+<nav class="navbar navbar-expand-lg bg-body-tertiary position-relative">
   <div class="container-fluid">
     <a class="navbar-brand logo fs-3" href="{% url 'home' %}"><img src="{% static 'images/logo-horizontal.png' %}" alt="Destino Voluntario" width="200"></a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -17,12 +17,6 @@
         {% if user.is_authenticated %}
           <li class="nav-item">
               <a class="nav-link" href="{% url 'dashboard' %}">Dashboard</a>
-          </li>
-          <li class="nav-item">
-            <form action="{% url 'logout' %}" method="post" class="d-inline">
-              {% csrf_token %}
-              <button type="submit" class="btn btn-link nav-link">Cerrar sesión</button>
-            </form>
           </li>
         {% else %}
           <li class="nav-item dropdown">
@@ -44,5 +38,36 @@
         <button class="btn btn-outline-success" type="submit">Buscar</button>
       </form>
     </div>
+    {# Botón moderno de Cerrar sesión: fuera del collapse para estar siempre visible (esquina superior derecha) #}
+    <div class="position-absolute end-0 me-3" style="top:0px;">
+      {% if user.is_authenticated %}
+        <form action="{% url 'logout' %}" method="post" class="m-0">
+          {% csrf_token %}
+          {% if user.role == 'voluntario' %}
+            <button type="submit" class="btn btn-sm rounded-pill d-flex align-items-center" 
+                    style="background-color: rgba(229, 52, 69, 0.6); color: #fff; border: none; gap:.5rem;"
+                    data-bs-toggle="tooltip" data-bs-placement="bottom" title="Cerrar sesión">
+              <i class="bi bi-box-arrow-right"></i>
+              <span class="d-none d-md-inline ms-2">Cerrar sesión</span>
+            </button>
+          {% else %}
+            <button type="submit" class="btn btn-sm rounded-pill d-flex align-items-center" 
+                    style="background-color: rgba(13,110,253,0.6); color: #fff; border: none; gap:.5rem;"
+                    data-bs-toggle="tooltip" data-bs-placement="bottom" title="Cerrar sesión">
+              <i class="bi bi-box-arrow-right"></i>
+              <span class="d-none d-md-inline ms-2">Cerrar sesión</span>
+            </button>
+          {% endif %}
+        </form>
+      {% endif %}
+    </div>
+
+    <script>
+      // Inicializar tooltips de Bootstrap (asegura que bootstrap bundle esté cargado en base.html)
+      document.addEventListener('DOMContentLoaded', function () {
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+        tooltipTriggerList.forEach(function (el) { new bootstrap.Tooltip(el); });
+      });
+    </script>
   </div>
 </nav>

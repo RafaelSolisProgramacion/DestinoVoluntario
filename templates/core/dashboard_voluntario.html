@@ -9,10 +9,6 @@
     {% include '../components/navbar.html' %}
 
     <h1>Bienvenido al Dashboard del Voluntario: {{ user.username }}</h1>
-    <form action="{% url 'logout' %}" method="post">
-        {% csrf_token %}
-        <button type="submit">Cerrar sesión</button>
-    </form>
     <h2>Mis Postulaciones</h2>
     
     {% if user.is_authenticated and user.role == 'voluntario' %}

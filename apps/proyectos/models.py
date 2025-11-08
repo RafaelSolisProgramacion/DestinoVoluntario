@@ -19,6 +19,7 @@ class Proyecto(models.Model):
     title = models.CharField(max_length=255)
     description = models.TextField()
     location = models.CharField(max_length=255)
+    image = models.ImageField(upload_to='proyectos/', blank=True, null=True)
     start_date = models.DateField()
     end_date = models.DateField()
     status = models.CharField(max_length=20, choices=ESTADOS, default='activo')

@@ -39,6 +39,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'widget_tweaks',
+    
+    
 
     # Apps modulares del proyecto
     'apps.core',
@@ -138,3 +141,18 @@ MEDIA_ROOT = BASE_DIR / 'media'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# Email Configuration
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'tu.correo@gmail.com'  # Reemplaza con tu correo de Gmail
+EMAIL_HOST_PASSWORD = 'tu_contraseña_de_aplicacion'  # Reemplaza con tu contraseña de aplicación de Gmail
+
+# Configuración para recuperación de contraseña
+PASSWORD_RESET_TIMEOUT = 3600  # 1 hora para el token de reset
+ 
+# Dirección desde la que se enviarán los correos (puedes dejar la misma que EMAIL_HOST_USER)
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+SERVER_EMAIL = EMAIL_HOST_USER

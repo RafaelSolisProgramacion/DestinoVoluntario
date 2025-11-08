@@ -1,72 +1,77 @@
 {% extends '../components/base.html' %}
+{% load widget_tweaks %}
+
 
 {% block title %}Crear Proyecto{% endblock %}
 
 {% block template %}
     {% include '../components/navbar.html' %}
-    
+
     {% if not user.is_authenticated %}
         <div class="container mt-5 text-center">
             <p class="text-center">Debes iniciar sesión para crear un proyecto.</p>
             <p class="text-center"><a href="{% url 'login' %}" class="btn btn-primary">Iniciar sesión</a></p>
         </div>
     {% else %}
-        <div class="container my-4 text-center card p-4 shadow-sm col-8">
-            <h1 class="text-center mb-4">Crear Proyecto</h1>
-            <form method="post" enctype="multipart/form-data" class="card p-4 shadow-sm text-center" action="{% url 'crear_proyecto' %}">
-                {% if form.non_field_errors %}
-                    <div class="alert alert-danger">
-                        {{ form.non_field_errors }}
-                    </div>
-                {% endif %}
-                {% csrf_token %}
-                {% for field in form %}
-                    <div class="mb-3">
-                        {{ field.label_tag }}
-                        {{ field }}
-                        {% if field.errors %}
-                        <div class="text-danger small">{{ field.errors|striptags }}</div>
-                        {% endif %}
-                    </div>
-                {% endfor %}
+        <div class="container mt-5">
+            <div class="row justify-content-center align-items-center">
+                <div class="col-lg-5 col-md-8 mb-2 mb-md-0">
+                    <div class="card shadow-lg rounded-2 border-0 p-5">
+                        <h2 class="fw-bold text-center mb-2">Crear Proyecto</h2>
+                        <p class="text-muted text-center mb-4">Completa la información del proyecto</p>
+                        <form method="post" enctype="multipart/form-data" action="{% url 'crear_proyecto' %}">
+                            {% csrf_token %}
+                            {% if form.non_field_errors %}
+                                <div class="alert alert-danger">
+                                    {{ form.non_field_errors }}
+                                </div>
+                            {% endif %}
 
-                <button type="submit" class="btn btn-primary">Crear Proyecto</button>
-            </form>
+                            {% for field in form %}
+                                <div class="mb-3">
+                                    {% if field.name == 'title' %}
+                                        <label class="form-label fw-semibold">Título</label>
+                                        {{ field|add_class:'form-control'|attr:"placeholder:Ingrese el título del proyecto" }}
+                                    {% elif field.name == 'description' %}
+                                        <label class="form-label fw-semibold">Descripción</label>
+                                        {{ field|add_class:'form-control'|attr:"placeholder:Describe el proyecto" }}
+                                    {% elif field.name == 'location' %}
+                                        <label class="form-label fw-semibold">Ubicación</label>
+                                        {{ field|add_class:'form-control'|attr:"placeholder:Ingrese la ubicación" }}
+                                                        {% elif field.name == 'start_date' %}
+                                        <label class="form-label fw-semibold">Fecha de inicio</label>
+                                        {{ field|add_class:'form-control' }}
+                                                        {% elif field.name == 'end_date' %}
+                                        <label class="form-label fw-semibold">Fecha de término</label>
+                                        {{ field|add_class:'form-control' }}
+                                                        {% elif field.name == 'image' %}
+                                                            <label class="form-label fw-semibold">Imagen (opcional)</label>
+                                                            {{ field|add_class:'form-control'|attr:"accept:image/*" }}
+                                                            <div class="form-text">Puedes subir una imagen representativa del proyecto (jpg, png, webp).</div>
+                                    {% else %}
+                                        <label class="form-label fw-semibold">{{ field.label }}</label>
+                                        {{ field|add_class:'form-control' }}
+                                    {% endif %}
+                                    {% if field.errors %}
+                                        <div class="text-danger small mt-1">{{ field.errors|striptags }}</div>
+                                    {% endif %}
+                                </div>
+                            {% endfor %}
+
+                            <div class="mt-3 mb-3">
+                                <button type="submit" class="btn btn-primary w-100 py-2 fw-bold" style="border-radius: 8px; background-color: #0d6efd; border: none; box-shadow: 0 2px 4px rgba(13, 110, 253, 0.2);">
+                                    <i class="bi bi-plus-circle me-2"></i>Crear Proyecto
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="col-lg-7 d-none d-md-flex justify-content-center align-items-center">
+                    <img src="/static/images/logo.png" alt="Logo grande" style="width: 800px; height: 1200px; object-fit: cover; border-radius: 24px; display: block; max-width: 95vw; max-height: 95vh;">
+                </div>
+            </div>
         </div>
     {% endif %}
-    
+
     {% include '../components/footer.html' %}
 {% endblock %}
-
-
-<!-- <h2>Crear Proyecto</h2>
-<form action="{% url 'crear_proyecto' %}" method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Crear Proyecto</button>
-</form> -->
-
-
-
-<!-- Este codigo de abajo fue agregado por copilot en el IDE si da error borrarlo
-{% if form.errors %}
-    <div class="error">
-        <p>Por favor corrige los errores a continuación:</p>
-        <ul>
-            {% for field in form %}
-                {% for error in field.errors %}
-                    <li>{{ error }}</li>
-                {% endfor %}
-            {% endfor %}
-            {% for error in form.non_field_errors %}
-                <li>{{ error }}</li>
-            {% endfor %}
-        </ul>
-    </div>
-{% endif %}
-{% if success %}
-    <p>Proyecto creado exitosamente.</p>
-{% endif %}
-{% if not success %}
-    <p>Por favor completa el formulario para crear un nuevo proyecto.</p>
-{% endif %} -->

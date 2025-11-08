@@ -1,0 +1,44 @@
+{% extends '../components/base.html' %}
+{% block title %}Términos y Condiciones{% endblock %}
+{% block template %}
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-md-8 col-lg-7">
+      <div class="card p-4 shadow-lg rounded-4 border-0">
+        <h2 class="fw-bold mb-4 text-center">Términos y Condiciones</h2>
+        <p>Bienvenido a Destino Voluntario. Al registrarte y utilizar nuestra plataforma, aceptas los siguientes términos y condiciones:</p>
+        <ul>
+          <li>Tu información será tratada de acuerdo a nuestra política de privacidad.</li>
+          <li>Debes proporcionar datos verídicos y actualizados.</li>
+          <li>El uso de la plataforma debe ser respetuoso y solidario.</li>
+          <li>Destino Voluntario no se responsabiliza por acuerdos externos entre usuarios.</li>
+          <li>Nos reservamos el derecho de modificar estos términos en cualquier momento.</li>
+        </ul>
+        <p class="mt-4">Si tienes dudas, contáctanos a través de nuestro formulario de contacto.</p>
+        <hr class="my-4">
+        <div class="text-center mb-3">
+          <!-- Botón para regresar al proyecto: intenta history.back() y hace fallback a la lista de proyectos -->
+          <a href="{% url 'listar_proyectos' %}" class="btn btn-outline-primary me-2" id="btn-regresar">Regresar al proyecto</a>
+          <script>
+            // Si hay historial previo, usar history.back(); si no, el enlace ya tiene el fallback hacia 'listar_proyectos'
+            (function(){
+              var btn = document.getElementById('btn-regresar');
+              btn.addEventListener('click', function(event){
+                // Si el historial de navegación tiene al menos 1 entrada previa, usar history.back()
+                if (window.history && window.history.length > 1) {
+                  event.preventDefault();
+                  window.history.back();
+                }
+                // En navegadores o contextos sin historial, el enlace seguirá su href hacia 'listar_proyectos'
+              });
+            })();
+          </script>
+        </div>
+          <h4 class="fw-bold mb-2">Contáctanos</h4>
+          <p>¿Tienes preguntas o necesitas ayuda? <a href="mailto:info@destinovoluntario.com" class="text-primary">Escríbenos a info@destinovoluntario.com</a> o utiliza nuestro <a href="#" class="text-primary">formulario de contacto</a>.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

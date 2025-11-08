@@ -10,6 +10,7 @@
 
 {% block template %}
 {% include '../components/navbar.html' %}
+{% load widget_tweaks %}
 
 {% if user.is_authenticated %}
 <div class="container mt-5">
@@ -19,22 +20,41 @@
   
 {% else %}
 <div class="container mt-5">
-  <div class="row justify-content-center">
-    <div class="col-md-4">
-      <h1 class="mb-4 text-center">Iniciar Sesión</h1>
-      <form method="post" class="card p-4 shadow-sm">
+  <div class="row justify-content-center align-items-center">
+    <div class="col-md-6 col-lg-5">
+      <div class="text-center mb-4">
+        <h1 class="fw-bold mb-4">Iniciar Sesión</h1>
+      </div>
+      <form method="post" class="card p-4 shadow-lg rounded-4 border-0" style="background: #fff;">
         {% csrf_token %}
         {% for field in form %}
-          <div class="mb-3">
-            {{ field.label_tag }}
-            {{ field }}
+          <div class="mb-4">
+            {% if field.name == 'username' %}
+              <label class="form-label fw-semibold">Nombre de usuario</label>
+              {{ field|add_class:'form-control'|attr:"placeholder:Ingrese su nombre de usuario" }}
+            {% elif field.name == 'password' %}
+              <label class="form-label fw-semibold">Contraseña</label>
+              {{ field|add_class:'form-control'|attr:"placeholder:Ingrese la contraseña" }}
+            {% else %}
+              {{ field.label_tag }}
+              {{ field|add_class:'form-control' }}
+            {% endif %}
             {% if field.errors %}
-              <div class="text-danger small">{{ field.errors|striptags }}</div>
+              <div class="text-danger small mt-1">{{ field.errors|striptags }}</div>
             {% endif %}
           </div>
         {% endfor %}
-        <button type="submit" class="btn btn-primary w-100">Iniciar Sesión</button>
+        <button type="submit" class="btn btn-primary w-100 py-2 fw-bold">Iniciar Sesión</button>
+        <div class="d-flex justify-content-between mt-3">
+          <a href="{% url 'password_reset' %}" class="text-decoration-none text-primary">¿Olvidaste tu contraseña?</a>
+          <a href="{% url 'registrar_voluntario' %}" class="text-decoration-none text-primary">Regístrate</a>
+        </div>
       </form>
+    </div>
+    <div class="col-md-6 d-none d-md-flex justify-content-center align-items-center">
+  <img src="/static/images/logo.png" alt="Logo grande" style="width: 500px; height: 550px; object-fit: cover; border-radius: 24px; display: block; max-width: 95vw; max-height: 95vh;">
+        <h2 class="fw-bold mt-4 mb-0" style="font-size:2.2rem; color:#222;">
+      </div>
     </div>
   </div>
 </div>
