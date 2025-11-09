@@ -28,7 +28,9 @@ DEBUG = True
 ALLOWED_HOSTS = [
     "destinovoluntario.onrender.com"
 ]
-
+CSRF_TRUSTED_ORIGINS = [
+    "https://destinovoluntario.onrender.com"
+]
 
 AUTH_USER_MODEL = 'core.Usuario'  # Custom user model
 
