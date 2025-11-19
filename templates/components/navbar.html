@@ -33,34 +33,22 @@
         {% endif %}
         
       </ul>
-      <form class="d-flex" role="search" action="{% url 'buscar_proyectos' %}" method="get">
-        <input class="form-control me-2" type="search" name="q" placeholder="Buscar Proyectos" aria-label="Search" value="{{ query|default:'' }}" />
-        <button class="btn btn-outline-success" type="submit">Buscar</button>
-      </form>
-    </div>
-    {# Botón moderno de Cerrar sesión: fuera del collapse para estar siempre visible (esquina superior derecha) #}
-    <div class="position-absolute end-0 me-3" style="top:0px;">
-      {% if user.is_authenticated %}
-        <form action="{% url 'logout' %}" method="post" class="m-0">
-          {% csrf_token %}
-          {% if user.role == 'voluntario' %}
-            <button type="submit" class="btn btn-sm rounded-pill d-flex align-items-center"
-                    style="background-color: rgba(235, 244, 243, 0.986); color: #0d6efd; border: none; gap:.5rem;"
-                    data-bs-toggle="tooltip" data-bs-placement="bottom" title="Cerrar sesión">
-              <i class="bi bi-box-arrow-right"></i>
-              <span class="d-none d-md-inline ms-2">Cerrar sesión</span>
-            </button>
-          {% else %}
-            <button type="submit" class="btn btn-sm d-flex align-items-center"
-                    style="background: none; color: #0d6efd; border: none; gap:.5rem;"
-                    data-bs-toggle="tooltip" data-bs-placement="bottom" title="Cerrar sesión">
-              <i class="bi bi-box-arrow-right"></i>
-              <span class="d-none d-md-inline ms-2">Cerrar sesión</span>
-            </button>
-          {% endif %}
+      <div class="d-flex align-items-center ms-auto">
+        <form class="d-flex me-3" role="search" action="{% url 'buscar_proyectos' %}" method="get">
+          <input class="form-control me-2" type="search" name="q" placeholder="Buscar Proyectos" aria-label="Search" value="{{ query|default:'' }}" />
+          <button class="btn btn-outline-success" type="submit">Buscar</button>
         </form>
-      {% endif %}
+
+        {# Botón de cerrar sesión (rojo) colocado a la derecha del buscador #}
+        {% if user.is_authenticated %}
+          <form action="{% url 'logout' %}" method="post" class="m-0">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-outline-danger">Cerrar sesión</button>
+          </form>
+        {% endif %}
+      </div>
     </div>
+    {# Corner logout removed — logout now shown next to search #}
 
     <script>
       // Inicializar tooltips de Bootstrap (asegura que bootstrap bundle esté cargado en base.html)

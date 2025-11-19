@@ -17,7 +17,7 @@
 <div class="container py-4">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h2 class="fw-bold mb-0">Bienvenido, {{ user.username }}</h2>
-        {# Botón de cerrar sesión eliminado, ahora está en el navbar #}
+        {# Botón de cerrar sesión movido al navbar; se elimina aquí para evitar duplicados #}
     </div>
     <div class="mb-4">
         <a href="{% url 'crear_proyecto' %}" class="btn btn-primary">Crear Nuevo Proyecto</a>
