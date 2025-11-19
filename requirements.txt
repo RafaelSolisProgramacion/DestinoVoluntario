@@ -1,0 +1,4 @@
+django
+django-htmx
+django-widget-tweaks
+Pillow

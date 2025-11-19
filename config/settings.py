@@ -25,8 +25,12 @@ SECRET_KEY = 'django-insecure-&(ob11$x=fpo2#y1(w^fv=_-vwiuvm#kbp8s5)o!*%qr8j%7r5
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
-
+ALLOWED_HOSTS = [
+    "destinovoluntario.onrender.com"
+]
+CSRF_TRUSTED_ORIGINS = [
+    "https://destinovoluntario.onrender.com"
+]
 
 AUTH_USER_MODEL = 'core.Usuario'  # Custom user model
 
