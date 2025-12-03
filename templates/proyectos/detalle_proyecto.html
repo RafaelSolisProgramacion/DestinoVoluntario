@@ -74,9 +74,12 @@
     </div>
     </div>
 
+    {# Mostrar el botón 'Volver a Proyectos' solo si el usuario ha iniciado sesión. #}
+    {% if user.is_authenticated %}
     <div class="text-center mt-4 mb-5">
         <a href="{% url 'dashboard' %}" class="btn btn-secondary">Volver a Proyectos</a>
     </div>
+    {% endif %}
 </div>
 {% include '../components/footer.html' %}
 {% endblock %}

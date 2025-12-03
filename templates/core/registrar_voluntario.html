@@ -7,7 +7,7 @@
 {% block template %}
 <style>
   body {
-    background: #f8f6f2;
+    background: #ffffff; /* blanco, igual que la página de iniciar sesión */
     min-height: 100vh;
   }
 </style>
@@ -21,8 +21,8 @@
 {% else %}
 <div class="container mt-5">
   <div class="row justify-content-center align-items-center">
-    <div class="col-lg-5 col-md-6 mb-4 mb-md-0">
-      <div class="card shadow-lg rounded-4 border-0 p-4">
+    <div class="col-lg-4 col-md-6 mb-4 mb-md-4">
+      <div class="card shadow-lg rounded-4 border-0 p-4" style="background: #fff; max-width: 520px;">
         <h2 class="fw-bold text-center mb-2">Registrarse como Voluntario</h2>
         <p class="text-muted text-center mb-4">¿Ya tienes cuenta? <a href="{% url 'login' %}" class="text-primary">Inicia sesión</a></p>
         <form method="post">
@@ -37,10 +37,16 @@
                 {{ field|add_class:'form-control'|attr:"placeholder:Ingrese su correo electrónico" }}
               {% elif field.name == 'password1' %}
                 <label class="form-label fw-semibold">Contraseña</label>
-                {{ field|add_class:'form-control'|attr:"placeholder:Ingrese la contraseña" }}
+                <div class="input-group">
+                  {{ field|add_class:'form-control password-field'|attr:"placeholder:Ingrese la contraseña" }}
+                  <button type="button" class="btn btn-outline-secondary toggle-password" tabindex="-1" aria-label="Mostrar contraseña"></button>
+                </div>
               {% elif field.name == 'password2' %}
                 <label class="form-label fw-semibold">Confirmación de contraseña</label>
-                {{ field|add_class:'form-control'|attr:"placeholder:Ingrese la confirmación de la contraseña" }}
+                <div class="input-group">
+                  {{ field|add_class:'form-control password-field'|attr:"placeholder:Ingrese la confirmación de la contraseña" }}
+                  <button type="button" class="btn btn-outline-secondary toggle-password" tabindex="-1" aria-label="Mostrar contraseña"></button>
+                </div>
               {% elif field.name == 'nombre' %}
                 <label class="form-label fw-semibold">Nombre</label>
                 {{ field|add_class:'form-control'|attr:"placeholder:Ingrese el nombre" }}

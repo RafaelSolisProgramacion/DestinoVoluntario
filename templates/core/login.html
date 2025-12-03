@@ -34,7 +34,10 @@
               {{ field|add_class:'form-control'|attr:"placeholder:Ingrese su nombre de usuario" }}
             {% elif field.name == 'password' %}
               <label class="form-label fw-semibold">Contraseña</label>
-              {{ field|add_class:'form-control'|attr:"placeholder:Ingrese la contraseña" }}
+              <div class="input-group">
+                {{ field|add_class:'form-control password-field'|attr:"placeholder:Ingrese la contraseña" }}
+                <button type="button" class="btn btn-outline-secondary toggle-password" tabindex="-1" aria-label="Mostrar contraseña"></button>
+              </div>
             {% else %}
               {{ field.label_tag }}
               {{ field|add_class:'form-control' }}

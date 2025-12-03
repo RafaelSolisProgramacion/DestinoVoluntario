@@ -18,29 +18,32 @@
           <li class="nav-item">
               <a class="nav-link" href="{% url 'dashboard' %}">Dashboard</a>
           </li>
-        {% else %}
-          <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            Ingresar
-          </a>
-          <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="{% url 'registrar_voluntario' %}">Registrar Voluntario</a></li>
-            <li><a class="dropdown-item" href="{% url 'registrar_organizacion' %}">Registrar Organización</a></li>
-            <li><hr class="dropdown-divider"></li>
-            <li><a class="dropdown-item" href="{% url 'login' %}">Iniciar Sesión</a></li>
-          </ul>
-        </li>
         {% endif %}
         
       </ul>
-      <div class="d-flex align-items-center ms-auto">
-        <form class="d-flex me-3" role="search" action="{% url 'buscar_proyectos' %}" method="get">
+      <div class="d-flex align-items-center gap-3">
+        <form class="d-flex align-items-center me-5" role="search" action="{% url 'buscar_proyectos' %}" method="get" style="width: 450px;">
           <input class="form-control me-2" type="search" name="q" placeholder="Buscar Proyectos" aria-label="Search" value="{{ query|default:'' }}" />
-          <button class="btn btn-outline-success" type="submit">Buscar</button>
+          <button class="btn btn-outline-success btn-sm" type="submit">Buscar</button>
         </form>
 
-        {# Botón de cerrar sesión (rojo) colocado a la derecha del buscador #}
-        {% if user.is_authenticated %}
+        {# Autenticación: si no está autenticado mostrar Iniciar sesión + Registrarse lado a lado #}
+        {% if not user.is_authenticated %}
+          <div class="d-flex align-items-center gap-2">
+            <a href="{% url 'login' %}" class="btn btn-outline-primary btn-sm">Iniciar sesión</a>
+
+            <div class="btn-group">
+              <button type="button" class="btn btn-primary btn-sm dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                Registrarse
+              </button>
+              <ul class="dropdown-menu dropdown-menu-end">
+                <li><a class="dropdown-item" href="{% url 'registrar_voluntario' %}">Registrarse como Voluntario</a></li>
+                <li><a class="dropdown-item" href="{% url 'registrar_organizacion' %}">Registrarse como Organización</a></li>
+              </ul>
+            </div>
+          </div>
+        {% else %}
+          {# Botón de cerrar sesión (rojo) colocado a la derecha del buscador #}
           <form action="{% url 'logout' %}" method="post" class="m-0">
             {% csrf_token %}
             <button type="submit" class="btn btn-outline-danger">Cerrar sesión</button>

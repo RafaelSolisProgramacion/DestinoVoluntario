@@ -13,37 +13,45 @@
     <div class="container my-4">
         <h1 class="text-center mb-4">Lista de Proyectos</h1>
         <h2 class="text-center mb-4">Filtrar Proyectos</h2>
-        <form id="filtro-proyectos" class="mb-4 p-3 border rounded ">
-            <!-- las opciones se cargan dinámicamente y la primera opcion es Todas las organizaciones -->
-            <select class="form-select" aria-label="Filtrar por organización" name="organizacion">
-                <option value="todas">Todas las organizaciones</option>
-            {% for org in organizaciones %}
-                <option value="{{ org.id }}" {% if org.id|stringformat:"s" == request.GET.organizacion|stringformat:"s" %}selected{% endif %}>{{ org.name }}</option>
-            {% endfor %}
-            </select>
-
-        
-            <!-- radios inline para ordenar -->
-            <div class="d-flex align-items-center gap-3 mb-3">
-                <div class="form-check form-check-inline mb-0">
-                    <input class="form-check-input" type="radio" name="ordenar" id="ordenar-fecha-inicio" value="fecha-inicio" {% if request.GET.ordenar == "fecha-inicio" or not request.GET.ordenar %}checked{% endif %}>
-                    <label class="form-check-label" for="ordenar-fecha-inicio">Ordenar por fecha de inicio</label>
+        <form id="filtro-proyectos" class="mb-4 p-3 border rounded">
+            <div class="d-flex flex-wrap align-items-center gap-3">
+                <!-- Organización -->
+                <div class="flex-fill" style="min-width:220px;">
+                    <select class="form-select" aria-label="Filtrar por organización" name="organizacion">
+                        <option value="todas">Todas las organizaciones</option>
+                    {% for org in organizaciones %}
+                        <option value="{{ org.id }}" {% if org.id|stringformat:"s" == request.GET.organizacion|stringformat:"s" %}selected{% endif %}>{{ org.name }}</option>
+                    {% endfor %}
+                    </select>
                 </div>
-                <div class="form-check form-check-inline mb-0">
-                    <input class="form-check-input" type="radio" name="ordenar" id="ordenar-fecha-fin" value="fecha-fin" {% if request.GET.ordenar == "fecha-fin" %}checked{% endif %}>
-                    <label class="form-check-label" for="ordenar-fecha-fin">Ordenar por fecha de fin</label>
+
+                <!-- Radios inline de orden -->
+                <div class="d-flex align-items-center" style="min-width:260px;">
+                    <div class="form-check form-check-inline mb-0 me-2">
+                        <input class="form-check-input" type="radio" name="ordenar" id="ordenar-fecha-inicio" value="fecha-inicio" {% if request.GET.ordenar == "fecha-inicio" or not request.GET.ordenar %}checked{% endif %}>
+                        <label class="form-check-label" for="ordenar-fecha-inicio">Ordenar por fecha de inicio</label>
+                    </div>
+                    <div class="form-check form-check-inline mb-0">
+                        <input class="form-check-input" type="radio" name="ordenar" id="ordenar-fecha-fin" value="fecha-fin" {% if request.GET.ordenar == "fecha-fin" %}checked{% endif %}>
+                        <label class="form-check-label" for="ordenar-fecha-fin">Ordenar por fecha de fin</label>
+                    </div>
+                </div>
+
+                <!-- Estado -->
+                <div class="flex-fill" style="min-width:220px;">
+                    <select class="form-select" name="estado" aria-label="Filtrar por estado">
+                        <option value="">Selecciona un estado (Todos)</option>
+                        <option value="activo" {% if request.GET.estado == "activo" %}selected{% endif %}>Activo</option>
+                        <option value="cerrado" {% if request.GET.estado == "cerrado" %}selected{% endif %}>Cerrado</option>
+                        <option value="cancelado" {% if request.GET.estado == "cancelado" %}selected{% endif %}>Cancelado</option>
+                    </select>
+                </div>
+
+                <!-- Botón al final -->
+                <div class="ms-auto">
+                    <button type="submit" class="btn btn-primary">Filtrar</button>
                 </div>
             </div>
-
-            <!-- un select para filtrar por estado -->
-            <select class="form-select" name="estado" aria-label="Filtrar por estado">
-                <option value="">Selecciona un estado (Todos)</option>
-                <option value="activo" {% if request.GET.estado == "activo" %}selected{% endif %}>Activo</option>
-                <option value="cerrado" {% if request.GET.estado == "cerrado" %}selected{% endif %}>Cerrado</option>
-                <option value="cancelado" {% if request.GET.estado == "cancelado" %}selected{% endif %}>Cancelado</option>
-            </select>
-
-            <button type="submit" class="btn btn-primary my-4">Filtrar</button>
         </form>
     </div>
 
