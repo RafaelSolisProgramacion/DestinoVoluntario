@@ -8,79 +8,154 @@
 {% block template %}
 <style>
   body {
-    background: #ffffff; /* blanco, igual que la página de iniciar sesión */
+    background: #ffffff;
     min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+  .content-wrapper {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 20px;
+  }
+  .row-centered {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    gap: 20px;
   }
 </style>
 {% include '../components/navbar.html' %}
 
 {% if user.is_authenticated %}
-<div class="container mt-5">
+<div class="content-wrapper">
   <div class="alert alert-info" role="alert">
     Ya estás registrado como {{ user.username }}. Puedes ir a tu <a href="{% url 'dashboard_organizacion' %}">Dashboard</a>.
   </div>
 {% else %}
-<div class="container mt-2">
-  <div class="row justify-content-center align-items-center">
-    <div class="col-lg-4 col-md-4 mb-2 mb-md-4">
-      <div class="card shadow-lg rounded-4 border-0 p-4" style="background: #fff; max-width: 520px;">
+<div class="content-wrapper">
+  <div class="row-centered">
+    <div style="flex: 0 0 auto; max-width: 520px;">
+      <div class="card shadow-lg rounded-4 border-0 p-4" style="background: #fff;">
         <h2 class="fw-bold text-center mb-2">Registrarse como Organización</h2>
         <p class="text-muted text-center mb-4">¿Ya tienes cuenta? <a href="{% url 'login' %}" class="text-primary">Inicia sesión</a></p>
-        <form method="post">
+        <form method="post" id="registroOrganizacionForm">
           {% csrf_token %}
-          {% for field in form %}
-            <div class="mb-4">
-              {% if field.name == 'username' %}
+
+          <ul class="nav nav-tabs mb-3" id="registroTabs" role="tablist">
+            <li class="nav-item" role="presentation">
+              <button class="nav-link active" id="primaria-tab" data-bs-toggle="tab" data-bs-target="#primaria" type="button" role="tab" aria-controls="primaria" aria-selected="true">Información primaria</button>
+            </li>
+            <li class="nav-item" role="presentation">
+              <button class="nav-link" id="adicional-tab" data-bs-toggle="tab" data-bs-target="#adicional" type="button" role="tab" aria-controls="adicional" aria-selected="false">Información adicional</button>
+            </li>
+          </ul>
+
+          <div class="tab-content">
+            <div class="tab-pane fade show active" id="primaria" role="tabpanel" aria-labelledby="primaria-tab">
+              <div class="mb-3">
                 <label class="form-label fw-semibold">Nombre de usuario</label>
-                {{ field|add_class:'form-control'|attr:"placeholder:Ingrese su nombre de usuario" }}
-              {% elif field.name == 'email' %}
+                {{ form.username|add_class:'form-control'|attr:"placeholder:Ingrese su nombre de usuario" }}
+                {% if form.username.errors %}<div class="text-danger small mt-1">{{ form.username.errors|striptags }}</div>{% endif %}
+              </div>
+              <div class="mb-3">
                 <label class="form-label fw-semibold">Correo electrónico</label>
-                {{ field|add_class:'form-control'|attr:"placeholder:Ingrese su correo electrónico" }}
-              {% elif field.name == 'password1' %}
+                {{ form.email|add_class:'form-control'|attr:"placeholder:Ingrese su correo electrónico" }}
+                {% if form.email.errors %}<div class="text-danger small mt-1">{{ form.email.errors|striptags }}</div>{% endif %}
+              </div>
+              <div class="mb-3">
                 <label class="form-label fw-semibold">Contraseña</label>
                 <div class="input-group">
-                  {{ field|add_class:'form-control password-field'|attr:"placeholder:Ingrese la contraseña" }}
+                  {{ form.password1|add_class:'form-control password-field'|attr:"placeholder:Ingrese la contraseña" }}
                   <button type="button" class="btn btn-outline-secondary toggle-password" tabindex="-1" aria-label="Mostrar contraseña"></button>
                 </div>
-              {% elif field.name == 'password2' %}
+                {% if form.password1.errors %}<div class="text-danger small mt-1">{{ form.password1.errors|striptags }}</div>{% endif %}
+              </div>
+              <div class="mb-3">
                 <label class="form-label fw-semibold">Confirmación de contraseña</label>
                 <div class="input-group">
-                  {{ field|add_class:'form-control password-field'|attr:"placeholder:Ingrese la confirmación de la contraseña" }}
+                  {{ form.password2|add_class:'form-control password-field'|attr:"placeholder:Ingrese la confirmación de la contraseña" }}
                   <button type="button" class="btn btn-outline-secondary toggle-password" tabindex="-1" aria-label="Mostrar contraseña"></button>
                 </div>
-              {% elif field.name == 'nombre' %}
+                {% if form.password2.errors %}<div class="text-danger small mt-1">{{ form.password2.errors|striptags }}</div>{% endif %}
+              </div>
+              <div class="mb-3">
                 <label class="form-label fw-semibold">Nombre</label>
-                {{ field|add_class:'form-control'|attr:"placeholder:Ingrese el nombre" }}
-              {% elif field.name == 'descripcion' %}
-                <label class="form-label fw-semibold">Descripción</label>
-                {{ field|add_class:'form-control'|attr:"placeholder:Ingrese una descripción" }}
-              {% elif field.name == 'sitio_web' %}
-                <label class="form-label fw-semibold">Sitio web</label>
-                {{ field|add_class:'form-control'|attr:"placeholder:Ingrese la url de Sitio web" }}
-              {% else %}
-                <label class="form-label fw-semibold">{{ field.label }}</label>
-                {{ field|add_class:'form-control' }}
-              {% endif %}
-              {% if field.errors %}
-                <div class="text-danger small mt-1">{{ field.errors|striptags }}</div>
-              {% endif %}
+                {{ form.nombre|add_class:'form-control'|attr:"placeholder:Ingrese el nombre" }}
+                {% if form.nombre.errors %}<div class="text-danger small mt-1">{{ form.nombre.errors|striptags }}</div>{% endif %}
+              </div>
+              <div class="d-flex justify-content-end">
+                <button type="button" class="btn btn-outline-primary" id="toAdicional">Siguiente</button>
+              </div>
             </div>
-          {% endfor %}
-          <div class="form-check mb-4">
-            <input class="form-check-input" type="checkbox" id="terminosOrganizacion" required>
-            <label class="form-check-label" for="terminosOrganizacion">
-              Acepto los <a href="{% url 'terminos_condiciones' %}" target="_blank">Términos & Condiciones</a>
-            </label>
+
+            <div class="tab-pane fade" id="adicional" role="tabpanel" aria-labelledby="adicional-tab">
+              <div class="mb-3">
+                <label class="form-label fw-semibold">Descripción</label>
+                {{ form.descripcion|add_class:'form-control'|attr:"placeholder:Ingrese una descripción" }}
+                {% if form.descripcion.errors %}<div class="text-danger small mt-1">{{ form.descripcion.errors|striptags }}</div>{% endif %}
+              </div>
+              <div class="mb-3">
+                <label class="form-label fw-semibold">Sitio web</label>
+                {{ form.website|add_class:'form-control'|attr:"placeholder:Ingrese la url de Sitio web" }}
+                {% if form.website.errors %}<div class="text-danger small mt-1">{{ form.website.errors|striptags }}</div>{% endif %}
+              </div>
+              <div class="form-check mb-3">
+                <input class="form-check-input" type="checkbox" id="terminosOrganizacion" required>
+                <label class="form-check-label" for="terminosOrganizacion">
+                  Acepto los <a href="{% url 'terminos_condiciones' %}" target="_blank">Términos & Condiciones</a>
+                </label>
+              </div>
+              <div class="d-flex justify-content-between">
+                <button type="button" class="btn btn-outline-secondary" id="toPrimaria">Volver</button>
+                <button type="submit" class="btn btn-primary fw-bold">Registrarse</button>
+              </div>
+            </div>
           </div>
-          <button type="submit" class="btn btn-primary w-100 py-2 fw-bold">Registrarse</button>
         </form>
       </div>
     </div>
-    <div class="col-lg-7 d-none d-md-flex justify-content-center align-items-center">
-  <img src="/static/images/logo.png" alt="Logo grande" style="width: 800px; height: 1200px; object-fit: cover; border-radius: 24px; display: block; max-width: 95vw; max-height: 95vh;">
-      </div>
+    <div style="flex: 0 0 auto; display: none;" class="d-none d-lg-flex align-items-center justify-content-center">
+      <img src="/static/images/logo.png" alt="Logo grande" style="width: 800px; height: 1200px; object-fit: cover; border-radius: 24px; display: block; max-width: 95vw; max-height: 95vh;">
     </div>
   </div>
 </div>
 {% endif %}
-{% endblock %}
+  <script>
+  document.addEventListener('DOMContentLoaded', function(){
+    var toAdicional = document.getElementById('toAdicional');
+    var toPrimaria = document.getElementById('toPrimaria');
+    var adicionalTab = document.getElementById('adicional-tab');
+    var primariaTab = document.getElementById('primaria-tab');
+    var registroForm = document.getElementById('registroOrganizacionForm');
+
+    if(toAdicional){
+      toAdicional.addEventListener('click', function(){
+        var tab = new bootstrap.Tab(adicionalTab);
+        tab.show();
+      });
+    }
+    if(toPrimaria){
+      toPrimaria.addEventListener('click', function(){
+        var tab = new bootstrap.Tab(primariaTab);
+        tab.show();
+      });
+    }
+
+    registroForm?.addEventListener('submit', function(e){
+      var term = document.getElementById('terminosOrganizacion');
+      if(term && !term.checked){
+        e.preventDefault();
+        var tab = new bootstrap.Tab(adicionalTab);
+        tab.show();
+        term.focus();
+        alert('Debe aceptar los Términos & Condiciones para registrarse.');
+      }
+    });
+  });
+  </script>
+
+  {% endblock %}
