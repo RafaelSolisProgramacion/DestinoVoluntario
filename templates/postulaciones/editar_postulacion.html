@@ -3,8 +3,24 @@
 {% block title %}Editar Postulación{% endblock %}
 
 {% block template %}
+<style>
+    body {
+        background: #ffffff;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+    }
+    .content-wrapper {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 40px 20px;
+    }
+</style>
     {% include '../components/navbar.html' %}
 
+    <div class="content-wrapper">
     {% if not user.is_authenticated %}
         <div class="container mt-5 text-center">
             <p class="text-center">Debes iniciar sesión para editar una postulación.</p>
@@ -42,6 +58,7 @@
 
         </div>
     {% endif %}
+    </div>
 
 {% include '../components/footer.html' %}
 {% endblock %}

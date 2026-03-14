@@ -6,8 +6,22 @@
 
 
 {% block template %}
+<style>
+    body {
+        background: #ffffff;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+    }
+    .content-wrapper {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+    }
+</style>
     {% include '../components/navbar.html' %}
 
+<div class="content-wrapper">
 <h2>Resultados de la busqueda para {% if query %} "{{ query }}" {% endif %}:</h2>
 <div class="container">
     <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4" id="proyectos-grid">
@@ -19,5 +33,7 @@
         </div>
     {% endif %}
 </div>
+</div>
 
+{% include '../components/footer.html' %}
 {% endblock %}

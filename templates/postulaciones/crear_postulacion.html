@@ -3,8 +3,24 @@
 {% block title %}Crear Postulación{% endblock %}
 
 {% block template %}
+<style>
+    body {
+        background: #ffffff;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+    }
+    .content-wrapper {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 40px 20px;
+    }
+</style>
     {% include '../components/navbar.html' %}
 
+    <div class="content-wrapper">
     {% if not user.is_authenticated %}
         <div class="container mt-5 text-center">
             <p class="text-center">Debes iniciar sesión para crear una postulación.</p>
@@ -48,6 +64,5 @@
              <p class="text-center"><a href="{% url 'detalle_proyecto' proyecto.id %}" class="btn btn-secondary">Cancelar</a></p>
         </div>
     {% endif %}
-    
-    {% include '../components/footer.html' %}
+    </div>
 {% endblock %}

@@ -1,15 +1,11 @@
 {% load static %}
-<!-- <div class="border-bottom border-1 border-dark">
-    <div class="container py-4">
-        <div class="row">
-            <div class="col-12 col-md-6 offset-md-3 text-center">
-                <h1 class="display-1">Bienvenido a Destino Voluntario</h1>
-                <p class="lead">Conectamos voluntarios con organizaciones que necesitan ayuda.</p>
-                <button class="btn btn-primary rounded-pill px-4">¡Ver Proyectos!</button>
-            </div>
-        </div> 
-    </div>
-</div> -->
+{% if user.is_authenticated %}
+  <div id="welcome-message" style="position: fixed; top: 90px; left: 24px; background: rgba(255,255,255,0.98); padding: 14px 26px; border-radius: 12px; box-shadow: 0 4px 16px rgba(0,0,0,0.13); z-index: 9999; min-width: 240px; text-align: left; border: 2px solid #0099bb;">
+    <span style="font-size: 1.15rem; color: #0099bb; font-weight: 700;">¡Bienvenido, {{ user.first_name|default:user.username }}!</span>
+  </div>
+{% endif %}
+
+
 <div id="carouselExampleCaptions" class="carousel slide carousel-custom-height" data-bs-ride="carousel" data-bs-interval="8000">
   <div class="carousel-indicators">
     <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
@@ -48,3 +44,13 @@
     <span class="visually-hidden">Next</span>
   </button>
 </div>
+
+<script>
+  // Ocultar el mensaje de bienvenida después de 5 segundos
+  setTimeout(function() {
+    const welcomeMessage = document.getElementById('welcome-message');
+    if (welcomeMessage) {
+      welcomeMessage.style.display = 'none';
+    }
+  }, 5000);
+</script>

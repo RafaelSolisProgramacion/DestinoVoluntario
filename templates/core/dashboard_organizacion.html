@@ -10,20 +10,305 @@
     body {
         background: #f8f6f2;
         min-height: 100vh;
+        display: flex;
+        flex-direction: column;
     }
+    .content-wrapper {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+    }
+    .metric-card {
+        background: #fff;
+        border-radius: 10px;
+        padding: 20px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        text-align: center;
+        position: relative;
+    }
+    .metric-card .icon {
+        font-size: 2rem;
+        color: #0099bb;
+        margin-bottom: 10px;
+    }
+    .metric-card h5 {
+        font-size: 1rem;
+        color: #666;
+        margin-bottom: 10px;
+    }
+    .metric-card .number {
+        font-size: 2.5rem;
+        font-weight: bold;
+        color: #333;
+    }
+    .metric-card .change {
+        font-size: 0.9rem;
+        margin-top: 5px;
+    }
+    .chart-card {
+        background: #fff;
+        border-radius: 10px;
+        padding: 20px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+  .dashboard-section {
+    background: #fff;
+    border-radius: 18px;
+    box-shadow: 0 2px 16px rgba(0,0,0,0.07);
+    padding: 2rem 2rem 1.5rem 2rem;
+    margin-bottom: 2rem;
+  }
+  .dashboard-title {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: #222;
+    margin-bottom: 1.2rem;
+  }
+  .dashboard-list-item {
+    background: #f8fafc;
+    border-radius: 12px;
+    padding: 1.1rem 1.5rem;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+    border: 1px solid #e6e6e6;
+  }
+  .dashboard-list-item img {
+    width: 48px;
+    height: 48px;
+    object-fit: cover;
+    border-radius: 8px;
+    margin-right: 1.2rem;
+  }
+  .dashboard-list-item .badge {
+    font-size: 0.85rem;
+    font-weight: 600;
+    margin-left: 0.7rem;
+    background: #0099bb;
+    color: #fff;
+    border-radius: 8px;
+    padding: 0.3em 0.8em;
+  }
+  .dashboard-list-item .meta {
+    font-size: 0.95rem;
+    color: #888;
+    margin-left: auto;
+    display: flex;
+    gap: 1.2rem;
+  }
+  .dashboard-footer {
+    background: #16202a;
+    color: #fff;
+    padding: 2.5rem 0 1.5rem 0;
+    margin-top: 3rem;
+  }
+  .dashboard-footer a, .dashboard-footer a:visited {
+    color: #fff;
+    text-decoration: none;
+    opacity: 0.85;
+  }
+  .dashboard-footer a:hover {
+    text-decoration: underline;
+    opacity: 1;
+  }
 </style>
 {% include '../components/navbar.html' %}
 
+<div class="content-wrapper">
 <div class="container py-4">
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h2 class="fw-bold mb-0">Bienvenido, {{ user.username }}</h2>
-        {# Botón de cerrar sesión movido al navbar; se elimina aquí para evitar duplicados #}
+    <h1>Dashboard Organizacion</h1>
+
+    <!-- Métricas principales -->
+    <div class="row mb-4">
+        <div class="col-md-3 mb-3">
+            <div class="metric-card">
+                <div class="icon"><i class="bi bi-folder"></i></div>
+                <h5>Proyectos Activos</h5>
+                <div class="number">4</div>
+                <div class="change text-success">+12% este mes</div>
+            </div>
+        </div>
+        <div class="col-md-3 mb-3">
+            <div class="metric-card">
+                <div class="icon"><i class="bi bi-people"></i></div>
+                <h5>Voluntarios Aceptados</h5>
+                <div class="number">83</div>
+                <div class="change text-success">+8% este mes</div>
+            </div>
+        </div>
+        <div class="col-md-3 mb-3">
+            <div class="metric-card">
+                <div class="icon"><i class="bi bi-hourglass"></i></div>
+                <h5>Postulaciones Pendientes</h5>
+                <div class="number">1</div>
+                <div class="change text-warning">+5 este mes</div>
+            </div>
+        </div>
+        <div class="col-md-3 mb-3">
+            <div class="metric-card">
+                <div class="icon"><i class="bi bi-bar-chart"></i></div>
+                <h5>Total Proyectos</h5>
+                <div class="number">4</div>
+                <div class="change text-success">+3 este mes</div>
+            </div>
+        </div>
     </div>
-    <div class="mb-4">
-        <a href="{% url 'crear_proyecto' %}" class="btn btn-primary">Crear Nuevo Proyecto</a>
+
+    <!-- Gráficos -->
+    <div class="row">
+        <div class="col-md-6 mb-4">
+            <div class="chart-card">
+                <h5 class="mb-3">Actividad Mensual</h5>
+                <canvas id="actividadMensualChart"></canvas>
+            </div>
+        </div>
+        <div class="col-md-6 mb-4">
+            <div class="chart-card">
+                <h5 class="mb-3">Proyectos por Categoría</h5>
+                <canvas id="proyectosCategoriaChart"></canvas>
+            </div>
+        </div>
     </div>
+
+    <!-- Lista de proyectos -->
     <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4" id="proyectos-grid">
         {% include 'proyectos/listar_proyectos.html' %}
     </div>
+
+    <div class="dashboard-section mb-4">
+      <div class="dashboard-title">Mis Proyectos <a href="#" class="float-end small" style="color:#0099bb;">Ver todos</a></div>
+      <div class="dashboard-list-item">
+        <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Proyecto 1">
+        <div>
+          <div class="fw-bold">Una Cancha de Basket para Todos <span class="badge">Activo</span></div>
+          <div class="text-muted" style="font-size:0.95rem;">18 ago 2025 &nbsp;·&nbsp; 12/20 &nbsp;·&nbsp; 2 postulaciones</div>
+        </div>
+        <div class="meta">
+          <span>...</span>
+        </div>
+      </div>
+      <div class="dashboard-list-item">
+        <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Proyecto 2">
+        <div>
+          <div class="fw-bold">Cadena de Oración <span class="badge">Activo</span></div>
+          <div class="text-muted" style="font-size:0.95rem;">29 ago 2025 &nbsp;·&nbsp; 35/50 &nbsp;·&nbsp; 0 postulaciones</div>
+        </div>
+        <div class="meta">
+          <span>...</span>
+        </div>
+      </div>
+      <div class="dashboard-list-item">
+        <img src="https://randomuser.me/api/portraits/men/65.jpg" alt="Proyecto 3">
+        <div>
+          <div class="fw-bold">Regalos Para los niños Necesitados <span class="badge">Activo</span></div>
+          <div class="text-muted" style="font-size:0.95rem;">05 ene 2025 &nbsp;·&nbsp; 14/20 &nbsp;·&nbsp; 0 postulaciones</div>
+        </div>
+        <div class="meta">
+          <span>...</span>
+        </div>
+      </div>
+    </div>
 </div>
+
+<footer class="dashboard-footer mt-auto w-100">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-4 mb-3 mb-md-0">
+        <div class="mb-2"><img src="/static/images/logo horizontal.png" alt="Destino Voluntario" style="height:32px;"></div>
+        <p class="mb-2">Conectamos voluntarios apasionados con organizaciones que necesitan ayuda. Juntos hacemos la diferencia en nuestras comunidades.</p>
+        <div class="d-flex gap-2">
+          <a href="#"><i class="bi bi-facebook fs-5"></i></a>
+          <a href="#"><i class="bi bi-instagram fs-5"></i></a>
+          <a href="#"><i class="bi bi-twitter fs-5"></i></a>
+        </div>
+      </div>
+      <div class="col-md-2 mb-3 mb-md-0">
+        <div class="fw-bold mb-2">Enlaces Rápidos</div>
+        <ul class="list-unstyled">
+          <li><a href="#">Inicio</a></li>
+          <li><a href="#">Proyectos</a></li>
+          <li><a href="#">Ser Voluntario</a></li>
+          <li><a href="#">Registrar Organización</a></li>
+        </ul>
+      </div>
+      <div class="col-md-3 mb-3 mb-md-0">
+        <div class="fw-bold mb-2">Categorías</div>
+        <ul class="list-unstyled">
+          <li>Medio Ambiente</li>
+          <li>Salud</li>
+          <li>Educación</li>
+          <li>Social</li>
+          <li>Deportes</li>
+        </ul>
+      </div>
+      <div class="col-md-3">
+        <div class="fw-bold mb-2">Contacto</div>
+        <ul class="list-unstyled">
+          <li><i class="bi bi-geo-alt"></i> Av. Abraham Lincoln #456<br>Santo Domingo, República Dominicana</li>
+          <li><i class="bi bi-telephone"></i> +1 (809) 555-0123</li>
+          <li><i class="bi bi-envelope"></i> info@destinovoluntario.rd</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Gráfico de Actividad Mensual
+    const actividadMensualCtx = document.getElementById('actividadMensualChart').getContext('2d');
+    new Chart(actividadMensualCtx, {
+        type: 'line',
+        data: {
+            labels: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun'],
+            datasets: [{
+                label: 'Proyectos Activos',
+                data: [30, 50, 70, 90, 110, 130],
+                borderColor: 'rgba(75, 192, 192, 1)',
+                tension: 0.4,
+                fill: false
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: { legend: { display: false } }
+        }
+    });
+
+    // Gráfico de Proyectos por Categoría
+    const proyectosCategoriaCtx = document.getElementById('proyectosCategoriaChart').getContext('2d');
+    new Chart(proyectosCategoriaCtx, {
+        type: 'bar',
+        data: {
+            labels: ['Social', 'Ambiente', 'Salud', 'Educación', 'Deportes'],
+            datasets: [{
+                label: 'Proyectos',
+                data: [8, 6, 4, 3, 2],
+                backgroundColor: [
+                    'rgba(75, 192, 192, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(255, 206, 86, 0.2)',
+                    'rgba(153, 102, 255, 0.2)',
+                    'rgba(255, 99, 132, 0.2)'
+                ],
+                borderColor: [
+                    'rgba(75, 192, 192, 1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(153, 102, 255, 1)',
+                    'rgba(255, 99, 132, 1)'
+                ],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: { legend: { display: false } },
+            scales: { y: { beginAtZero: true } }
+        }
+    });
+});
+</script>
 {% endblock %}

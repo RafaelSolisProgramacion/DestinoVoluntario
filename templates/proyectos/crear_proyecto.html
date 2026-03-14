@@ -4,8 +4,36 @@
 {% block title %}Crear Proyecto{% endblock %}
 
 {% block template %}
+<style>
+    body {
+        background: #ffffff;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+    }
+    .content-wrapper {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 16px 8px;
+        min-height: 380px;
+    }
+    .row-centered {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+        gap: 20px;
+    }
+    .card {
+        max-width: 520px;
+        padding: 16px;
+    }
+</style>
     {% include '../components/navbar.html' %}
 
+    <div class="content-wrapper">
     {% if not user.is_authenticated %}
         <div class="container mt-5 text-center">
             <p class="text-center">Debes iniciar sesión para crear un proyecto.</p>
@@ -71,6 +99,7 @@
             </div>
         </div>
     {% endif %}
+    </div>
 
     {% include '../components/footer.html' %}
 {% endblock %}

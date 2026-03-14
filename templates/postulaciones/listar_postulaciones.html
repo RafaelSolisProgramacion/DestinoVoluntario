@@ -3,8 +3,22 @@
 {% block title %}Postulaciones{% endblock %}
 
 {% block template %}
+<style>
+    body {
+        background: #ffffff;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+    }
+    .content-wrapper {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+    }
+</style>
     {% include '../components/navbar.html' %}
-    
+
+    <div class="content-wrapper">
     {% if not user.is_authenticated %}
         <div class="container mt-5 text-center">
             <p class="text-center">Debes iniciar sesión para ver las postulaciones.</p>
@@ -81,6 +95,7 @@
 
 <div class="text-center mt-4">
     <a href="{% url 'dashboard' %}" class="btn btn-secondary">Volver a Proyectos</a>
+</div>
 </div>
 
 {% include '../components/footer.html' %}
