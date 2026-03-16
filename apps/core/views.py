@@ -1,12 +1,13 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import login
-from .forms import RegistroVoluntarioForm, RegistroOrganizacionForm
+from .forms import RegistroVoluntarioForm, RegistroOrganizacionForm, UsernameOrEmailLoginForm
 from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
 from apps.proyectos.models import Proyecto
 from apps.organizaciones.models import Organizacion
 from apps.postulaciones.models import Postulacion
 from django.core.paginator import Paginator
+from django.contrib.auth import authenticate
 
 # Create your views here.
 def registrar_voluntario(request):
@@ -132,3 +133,22 @@ def dashboard(request):
 
 def logout(request):
     return HttpResponse("Has cerrado sesión exitosamente.")
+
+# Vista personalizada para login con usuario o correo
+
+def login_identifier(request):
+    if request.user.is_authenticated:
+        return redirect('dashboard')
+    error = None
+    if request.method == 'POST':
+        form = UsernameOrEmailLoginForm(request.POST)
+        if form.is_valid():
+            user = form.get_user()
+            if user:
+                login(request, user)
+                return redirect('dashboard')
+            else:
+                error = 'Usuario/correo o contraseña incorrectos.'
+    else:
+        form = UsernameOrEmailLoginForm()
+    return render(request, 'core/login.html', {'form': form, 'error': error})

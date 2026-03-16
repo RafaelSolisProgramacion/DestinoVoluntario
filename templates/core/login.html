@@ -52,9 +52,9 @@
           {% endif %}
         {% for field in form %}
           <div class="mb-4">
-            {% if field.name == 'username' %}
-              <label class="form-label fw-semibold">Nombre de usuario</label>
-              {{ field|add_class:'form-control'|attr:"placeholder:Ingrese su nombre de usuario" }}
+            {% if field.name == 'identifier' %}
+               <label class="form-label fw-semibold">Usuario o correo electrónico</label>
+               {{ field|add_class:'form-control'|attr:"placeholder:Ingrese su usuario o correo electrónico" }}
             {% elif field.name == 'password' %}
               <label class="form-label fw-semibold">Contraseña</label>
               <div class="input-group">
@@ -62,8 +62,8 @@
                 <button type="button" class="btn btn-outline-secondary toggle-password" tabindex="-1" aria-label="Mostrar contraseña"></button>
               </div>
             {% else %}
-              {{ field.label_tag }}
-              {{ field|add_class:'form-control' }}
+                {{ field.label_tag }}
+                {{ field|add_class:'form-control' }}
             {% endif %}
             {% if field.errors %}
               <div class="text-danger small mt-1">{{ field.errors|striptags }}</div>
