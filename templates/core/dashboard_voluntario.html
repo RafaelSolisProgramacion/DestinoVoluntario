@@ -123,34 +123,36 @@
     <div class="row mb-4">
         <div class="col-md-3 mb-3">
             <div class="metric-card">
-                <div class="icon"><i class="bi bi-paper-plane"></i></div>
-                <h5>Postulaciones Enviadas</h5>
-                <div class="number">12</div>
-                <div class="change text-success">+2 este mes</div>
+                <div class="icon" style="margin-bottom: 0;">
+                    <i class="bi bi-chat" style="font-size: 2.2rem; color: #0099bb;"></i>
+                </div>
+                <h5 style="margin-top: 8px;">Postulaciones Enviadas</h5>
+                <div class="number">{{ metricas.postulaciones_enviadas }}</div>
+                <div class="change text-success">{% if metricas.postulaciones_enviadas > 0 %}+{{ metricas.postulaciones_enviadas }} este mes{% else %}Sin actividad{% endif %}</div>
             </div>
         </div>
         <div class="col-md-3 mb-3">
             <div class="metric-card">
                 <div class="icon"><i class="bi bi-check-circle"></i></div>
                 <h5>Proyectos Participados</h5>
-                <div class="number">5</div>
-                <div class="change text-success">+1 este mes</div>
+                <div class="number">{{ metricas.proyectos_participados }}</div>
+                <div class="change text-success">{% if metricas.proyectos_participados > 0 %}+{{ metricas.proyectos_participados }} este mes{% else %}Sin actividad{% endif %}</div>
             </div>
         </div>
         <div class="col-md-3 mb-3">
             <div class="metric-card">
                 <div class="icon"><i class="bi bi-clock"></i></div>
                 <h5>Horas Voluntariadas</h5>
-                <div class="number">120</div>
-                <div class="change text-success">+15 este mes</div>
+                <div class="number">{{ metricas.horas_voluntariadas }}</div>
+                <div class="change text-success">{% if metricas.horas_voluntariadas > 0 %}+{{ metricas.horas_voluntariadas }} este mes{% else %}Sin actividad{% endif %}</div>
             </div>
         </div>
         <div class="col-md-3 mb-3">
             <div class="metric-card">
                 <div class="icon"><i class="bi bi-award"></i></div>
                 <h5>Certificados Obtenidos</h5>
-                <div class="number">3</div>
-                <div class="change text-success">+1 este mes</div>
+                <div class="number">{{ metricas.certificados_obtenidos }}</div>
+                <div class="change text-success">{% if metricas.certificados_obtenidos > 0 %}+{{ metricas.certificados_obtenidos }} este mes{% else %}Sin actividad{% endif %}</div>
             </div>
         </div>
     </div>
@@ -171,45 +173,9 @@
         </div>
     </div>
 
-    <!-- Lista de proyectos -->
-    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4" id="proyectos-grid">
-        {% include 'proyectos/listar_proyectos.html' %}
-    </div>
+    <!-- Lista de proyectos eliminada -->
 
-    <!-- Proyectos Recientes -->
-    <div class="dashboard-section mb-4">
-        <div class="dashboard-title">Proyectos Recientes <a href="#" class="float-end small" style="color:#0099bb;">Ver todos</a></div>
-        <div class="dashboard-list-item">
-            <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Proyecto 1">
-            <div>
-                <div class="fw-bold">Una Cancha de Basket para Todos <span class="badge">Activo</span></div>
-                <div class="text-muted" style="font-size:0.95rem;">18 ago 2025 &nbsp;·&nbsp; 12/20 &nbsp;·&nbsp; 2 postulaciones</div>
-            </div>
-            <div class="meta">
-                <span>...</span>
-            </div>
-        </div>
-        <div class="dashboard-list-item">
-            <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Proyecto 2">
-            <div>
-                <div class="fw-bold">Cadena de Oración <span class="badge">Activo</span></div>
-                <div class="text-muted" style="font-size:0.95rem;">29 ago 2025 &nbsp;·&nbsp; 35/50 &nbsp;·&nbsp; 0 postulaciones</div>
-            </div>
-            <div class="meta">
-                <span>...</span>
-            </div>
-        </div>
-        <div class="dashboard-list-item">
-            <img src="https://randomuser.me/api/portraits/men/65.jpg" alt="Proyecto 3">
-            <div>
-                <div class="fw-bold">Regalos Para los niños Necesitados <span class="badge">Activo</span></div>
-                <div class="text-muted" style="font-size:0.95rem;">05 ene 2025 &nbsp;·&nbsp; 14/20 &nbsp;·&nbsp; 0 postulaciones</div>
-            </div>
-            <div class="meta">
-                <span>...</span>
-            </div>
-        </div>
-    </div>
+    <!-- Proyectos recientes eliminados -->
 </div>
 </div>
 

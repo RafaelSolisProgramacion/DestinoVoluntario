@@ -122,36 +122,36 @@
     <!-- Métricas principales -->
     <div class="row mb-4">
         <div class="col-md-3 mb-3">
-            <div class="metric-card">
-                <div class="icon"><i class="bi bi-folder"></i></div>
-                <h5>Proyectos Activos</h5>
-                <div class="number">4</div>
-                <div class="change text-success">+12% este mes</div>
-            </div>
+          <div class="metric-card">
+            <div class="icon"><i class="bi bi-folder"></i></div>
+            <h5>Proyectos Activos</h5>
+            <div class="number">{{ metricas.proyectos_activos }}</div>
+            <div class="change text-success">{% if metricas.proyectos_activos > 0 %}+{{ metricas.proyectos_activos }} este mes{% else %}Sin actividad{% endif %}</div>
+          </div>
         </div>
         <div class="col-md-3 mb-3">
-            <div class="metric-card">
-                <div class="icon"><i class="bi bi-people"></i></div>
-                <h5>Voluntarios Aceptados</h5>
-                <div class="number">83</div>
-                <div class="change text-success">+8% este mes</div>
-            </div>
+          <div class="metric-card">
+            <div class="icon"><i class="bi bi-people"></i></div>
+            <h5>Voluntarios Aceptados</h5>
+            <div class="number">{{ metricas.voluntarios_aceptados }}</div>
+            <div class="change text-success">{% if metricas.voluntarios_aceptados > 0 %}+{{ metricas.voluntarios_aceptados }} este mes{% else %}Sin actividad{% endif %}</div>
+          </div>
         </div>
         <div class="col-md-3 mb-3">
-            <div class="metric-card">
-                <div class="icon"><i class="bi bi-hourglass"></i></div>
-                <h5>Postulaciones Pendientes</h5>
-                <div class="number">1</div>
-                <div class="change text-warning">+5 este mes</div>
-            </div>
+          <div class="metric-card">
+            <div class="icon"><i class="bi bi-hourglass"></i></div>
+            <h5>Postulaciones Pendientes</h5>
+            <div class="number">{{ metricas.postulaciones_pendientes }}</div>
+            <div class="change text-warning">{% if metricas.postulaciones_pendientes > 0 %}+{{ metricas.postulaciones_pendientes }} este mes{% else %}Sin actividad{% endif %}</div>
+          </div>
         </div>
         <div class="col-md-3 mb-3">
-            <div class="metric-card">
-                <div class="icon"><i class="bi bi-bar-chart"></i></div>
-                <h5>Total Proyectos</h5>
-                <div class="number">4</div>
-                <div class="change text-success">+3 este mes</div>
-            </div>
+          <div class="metric-card">
+            <div class="icon"><i class="bi bi-bar-chart"></i></div>
+            <h5>Total Proyectos</h5>
+            <div class="number">{{ metricas.total_proyectos }}</div>
+            <div class="change text-success">{% if metricas.total_proyectos > 0 %}+{{ metricas.total_proyectos }} este mes{% else %}Sin actividad{% endif %}</div>
+          </div>
         </div>
     </div>
 

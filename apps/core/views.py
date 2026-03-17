@@ -78,6 +78,15 @@ def dashboard(request):
         paginator = Paginator(proyectos, paginate_by)
         page_obj = paginator.get_page(page_number)
 
+        # Métricas
+        metricas = {
+            'postulaciones_enviadas': postulaciones.count(),
+            'proyectos_participados': postulaciones.filter(status='aceptada').count(),
+            'horas_voluntariadas': 0,  # Puedes calcularlo si tienes un modelo de horas
+            'certificados_obtenidos': 0  # Puedes calcularlo si tienes un modelo de certificados
+        }
+        # Si el usuario no tiene ninguna postulación ni actividad, todo queda en cero
+
         if request.htmx:
             return render(
                 request, 
@@ -98,7 +107,8 @@ def dashboard(request):
                  'user': user, 
                  'proyectos': page_obj, 
                  'postulados': proyectos_postulados, 
-                 'postulaciones_por_proyecto': postulaciones_por_proyecto
+                 'postulaciones_por_proyecto': postulaciones_por_proyecto,
+                 'metricas': metricas
                  }
             )
         # return HttpResponse("Bienvenido al Dashboard del Voluntario")
@@ -107,6 +117,14 @@ def dashboard(request):
         proyectos = Proyecto.objects.filter(organizacion=organizacion)
         paginator = Paginator(proyectos, paginate_by)
         page_obj = paginator.get_page(page_number)
+
+        # Métricas
+        metricas = {
+            'proyectos_activos': proyectos.filter(status='activo').count() if proyectos.exists() else 0,
+            'voluntarios_aceptados': 0,  # Puedes calcularlo si tienes modelo de voluntarios aceptados
+            'postulaciones_pendientes': 0,  # Puedes calcularlo si tienes modelo de postulaciones
+            'total_proyectos': proyectos.count()
+        }
 
         if request.htmx:
             return render(
@@ -124,7 +142,8 @@ def dashboard(request):
                 'core/dashboard_organizacion.html', 
                 {
                     'user': user, 
-                    'proyectos': page_obj
+                    'proyectos': page_obj,
+                    'metricas': metricas
                 }
             )
         # return HttpResponse("Bienvenido al Dashboard de la Organización")
