@@ -194,10 +194,10 @@
       <div class="col-md-2 mb-3 mb-md-0">
         <div class="fw-bold mb-2">Enlaces Rápidos</div>
         <ul class="list-unstyled">
-          <li><a href="#">Inicio</a></li>
-          <li><a href="#">Proyectos</a></li>
-          <li><a href="#">Ser Voluntario</a></li>
-          <li><a href="#">Registrar Organización</a></li>
+          <li><a href="{% url 'home' %}">Inicio</a></li>
+          <li><a href="{% url 'listar_proyectos' %}">Proyectos</a></li>
+          <li><a href="{% url 'registrar_voluntario' %}">Ser Voluntario</a></li>
+          <li><a href="{% url 'registrar_organizacion' %}">Registrar Organización</a></li>
         </ul>
       </div>
       <div class="col-md-3 mb-3 mb-md-0">

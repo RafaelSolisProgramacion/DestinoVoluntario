@@ -24,7 +24,8 @@ from django.db.models import Q
 # Create your views here.
 def listar_proyectos(request):
     proyectos = Proyecto.objects.all()
-    organizaciones = Organizacion.objects.all()
+    # Solo mostrar organizaciones que tengan proyectos asociados y sin duplicados
+    organizaciones = Organizacion.objects.filter(proyecto__isnull=False).distinct()
     user = request.user
     postulaciones = Postulacion.objects.all()
 

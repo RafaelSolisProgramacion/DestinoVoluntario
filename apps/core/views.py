@@ -118,11 +118,14 @@ def dashboard(request):
         paginator = Paginator(proyectos, paginate_by)
         page_obj = paginator.get_page(page_number)
 
-        # Métricas
+        # Métricas reales
+        proyectos_ids = proyectos.values_list('id', flat=True)
+        voluntarios_aceptados = Postulacion.objects.filter(proyecto_id__in=proyectos_ids, status='aceptada').count()
+        postulaciones_pendientes = Postulacion.objects.filter(proyecto_id__in=proyectos_ids, status='pendiente').count()
         metricas = {
             'proyectos_activos': proyectos.filter(status='activo').count() if proyectos.exists() else 0,
-            'voluntarios_aceptados': 0,  # Puedes calcularlo si tienes modelo de voluntarios aceptados
-            'postulaciones_pendientes': 0,  # Puedes calcularlo si tienes modelo de postulaciones
+            'voluntarios_aceptados': voluntarios_aceptados,
+            'postulaciones_pendientes': postulaciones_pendientes,
             'total_proyectos': proyectos.count()
         }
 

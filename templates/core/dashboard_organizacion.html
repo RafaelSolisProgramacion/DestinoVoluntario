@@ -171,44 +171,7 @@
         </div>
     </div>
 
-    <!-- Lista de proyectos -->
-    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4" id="proyectos-grid">
-        {% include 'proyectos/listar_proyectos.html' %}
-    </div>
-
-    <div class="dashboard-section mb-4">
-      <div class="dashboard-title">Mis Proyectos <a href="#" class="float-end small" style="color:#0099bb;">Ver todos</a></div>
-      <div class="dashboard-list-item">
-        <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Proyecto 1">
-        <div>
-          <div class="fw-bold">Una Cancha de Basket para Todos <span class="badge">Activo</span></div>
-          <div class="text-muted" style="font-size:0.95rem;">18 ago 2025 &nbsp;·&nbsp; 12/20 &nbsp;·&nbsp; 2 postulaciones</div>
-        </div>
-        <div class="meta">
-          <span>...</span>
-        </div>
-      </div>
-      <div class="dashboard-list-item">
-        <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Proyecto 2">
-        <div>
-          <div class="fw-bold">Cadena de Oración <span class="badge">Activo</span></div>
-          <div class="text-muted" style="font-size:0.95rem;">29 ago 2025 &nbsp;·&nbsp; 35/50 &nbsp;·&nbsp; 0 postulaciones</div>
-        </div>
-        <div class="meta">
-          <span>...</span>
-        </div>
-      </div>
-      <div class="dashboard-list-item">
-        <img src="https://randomuser.me/api/portraits/men/65.jpg" alt="Proyecto 3">
-        <div>
-          <div class="fw-bold">Regalos Para los niños Necesitados <span class="badge">Activo</span></div>
-          <div class="text-muted" style="font-size:0.95rem;">05 ene 2025 &nbsp;·&nbsp; 14/20 &nbsp;·&nbsp; 0 postulaciones</div>
-        </div>
-        <div class="meta">
-          <span>...</span>
-        </div>
-      </div>
-    </div>
+    <!-- Lista de proyectos y tarjetas eliminadas para que no se muestren en el dashboard de organización -->
 </div>
 
 <footer class="dashboard-footer mt-auto w-100">
@@ -226,10 +189,10 @@
       <div class="col-md-2 mb-3 mb-md-0">
         <div class="fw-bold mb-2">Enlaces Rápidos</div>
         <ul class="list-unstyled">
-          <li><a href="#">Inicio</a></li>
-          <li><a href="#">Proyectos</a></li>
-          <li><a href="#">Ser Voluntario</a></li>
-          <li><a href="#">Registrar Organización</a></li>
+          <li><a href="{% url 'home' %}">Inicio</a></li>
+          <li><a href="{% url 'listar_proyectos' %}">Proyectos</a></li>
+          <li><a href="{% url 'registrar_voluntario' %}">Ser Voluntario</a></li>
+          <li><a href="{% url 'registrar_organizacion' %}">Registrar Organización</a></li>
         </ul>
       </div>
       <div class="col-md-3 mb-3 mb-md-0">
