@@ -1,4 +1,4 @@
-# Destino Voluntario
+# Destino Voluntariado
 
 Plataforma para conectar voluntarios con organizacines sociales. Proyecto desarrollad oen Django con enfoque modular.
 

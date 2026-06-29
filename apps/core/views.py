@@ -41,7 +41,7 @@ def registrar_organizacion(request):
     return render(request, 'core/registrar_organizacion.html', {'form': form})
 
 def home(request):
-    # return HttpResponse("Bienvenido a Destino Voluntario")
+    # return HttpResponse("Bienvenido a Destino Voluntariado")
     proyectos = Proyecto.objects.all()
     paginate_by = 9  # Número de proyectos por página
     page_number = request.GET.get('page', 1)
